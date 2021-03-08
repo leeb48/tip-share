@@ -1,22 +1,22 @@
-import React from "react";
+import { Button, ButtonBase, Grid } from "@material-ui/core";
+import AppBar from "@material-ui/core/AppBar";
+import IconButton from "@material-ui/core/IconButton";
+import InputBase from "@material-ui/core/InputBase";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import {
+  createStyles,
   fade,
   makeStyles,
   Theme,
-  createStyles,
 } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import LoginIcon from "@material-ui/icons/LockOpen";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import RegisterIcon from "@material-ui/icons/PersonAdd";
-import LoginIcon from "@material-ui/icons/LockOpen";
-import { Button, Grid } from "@material-ui/core";
+import React from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,11 +28,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       display: "block",
-      minWidth: "100px",
+      minWidth: "110px",
       [theme.breakpoints.up("sm")]: {
         display: "block",
       },
     },
+    titleBtn: {
+      paddingLeft: 0,
+    },
+
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
@@ -196,7 +200,9 @@ export default function PrimarySearchAppBar() {
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            TipShare
+            <IconButton className={classes.titleBtn} color="inherit">
+              TipShare
+            </IconButton>
           </Typography>
 
           <div className={classes.grow} />
