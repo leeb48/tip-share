@@ -1,6 +1,6 @@
 import LoginForm from "features/auth/LoginForm";
 import RegisterForm from "features/auth/RegisterForm";
-import TipPost from "features/tip-posts/TipPost";
+import TipPostMain from "features/tip-posts/TipPostMain";
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import SearchResults from "./features/search/SearchResults";
@@ -14,7 +14,7 @@ const Routes = () => {
         <Route exact path="/results" component={SearchResults} />
         <Route exact path="/login" component={LoginForm} />
         <Route exact path="/register" component={RegisterForm} />
-        <Route exact path="/tip-post" component={TipPost} />
+        <Route exact path="/tip-post" component={TipPostMain} />
       </Switch>
     </div>
   );
