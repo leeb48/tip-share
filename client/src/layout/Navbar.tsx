@@ -1,9 +1,9 @@
-import { Button, Grid } from "@material-ui/core";
+import { Button, ButtonBase, Grid } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
 import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 import {
   createStyles,
   fade,
@@ -16,7 +16,10 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import LoginIcon from "@material-ui/icons/LockOpen";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import RegisterIcon from "@material-ui/icons/PersonAdd";
+import { useAppDispatch } from "app/store";
+import { changeProfileTabIdx } from "features/profile/profileSlice";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -113,7 +116,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function PrimarySearchAppBar() {
+const Navbar = () => {
+  const dispatch = useAppDispatch();
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [
@@ -132,8 +137,13 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
+  // The index value corresponds to the tab index in the profile page
+  const handleMenuClose = (profileTabIdx?: number) => {
     setAnchorEl(null);
+
+    if (profileTabIdx !== undefined) {
+      dispatch(changeProfileTabIdx(profileTabIdx));
+    }
     handleMobileMenuClose();
   };
 
@@ -150,12 +160,30 @@ export default function PrimarySearchAppBar() {
       keepMounted
       transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
-      onClose={handleMenuClose}
+      onClose={() => handleMenuClose()}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My Shares</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Saved Places</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem
+        onClick={() => handleMenuClose(0)}
+        component={Link}
+        to="/profile"
+      >
+        Profile
+      </MenuItem>
+      <MenuItem
+        onClick={() => handleMenuClose(1)}
+        component={Link}
+        to="/profile"
+      >
+        My Shares
+      </MenuItem>
+      <MenuItem
+        onClick={() => handleMenuClose(2)}
+        component={Link}
+        to="/profile"
+      >
+        Saved Places
+      </MenuItem>
+      <MenuItem onClick={() => handleMenuClose()}>Logout</MenuItem>
     </Menu>
   );
 
@@ -293,4 +321,6 @@ export default function PrimarySearchAppBar() {
       {renderMenu}
     </div>
   );
-}
+};
+
+export default Navbar;

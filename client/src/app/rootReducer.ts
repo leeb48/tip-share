@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
+import profileReducer from "features/profile/profileSlice";
 
 const rootReducer = combineReducers({
-  root: () => 5,
+  profile: profileReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

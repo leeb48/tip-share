@@ -3,7 +3,9 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+import { RootState } from "app/rootReducer";
+import React, { useEffect } from "react";
+import { shallowEqual, useSelector } from "react-redux";
 import ProfileAccountPage from "./ProfileAccount";
 import ProfileAccountEdit from "./ProfileAccountEdit";
 import ProfileMyShares from "./ProfileMyShares";
@@ -56,8 +58,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default function SimpleTabs() {
+  // Use this index value to navigate to certain tab from other pages
+  const { profileTabIdx } = useSelector((state: RootState) => {
+    return {
+      profileTabIdx: state.profile.profileTabIdx,
+    };
+  }, shallowEqual);
+
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(profileTabIdx);
+
+  useEffect(() => {
+    setValue(profileTabIdx);
+  }, [profileTabIdx]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
