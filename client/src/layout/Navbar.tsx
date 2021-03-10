@@ -1,4 +1,4 @@
-import { Button, ButtonBase, Grid } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
@@ -153,7 +153,8 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My Posts</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My Shares</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Saved Places</MenuItem>
       <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
     </Menu>
   );
