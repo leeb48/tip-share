@@ -169,6 +169,9 @@ const Navbar = () => {
       >
         Profile
       </MenuItem>
+      <MenuItem onClick={() => handleMenuClose(0)} component={Link} to="/admin">
+        Admin
+      </MenuItem>
       <MenuItem
         onClick={() => handleMenuClose(1)}
         component={Link}

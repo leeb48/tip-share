@@ -6,10 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import { RootState } from "app/rootReducer";
 import React, { useEffect } from "react";
 import { shallowEqual, useSelector } from "react-redux";
-import ProfileAccountPage from "./ProfileAccount";
-import ProfileAccountEdit from "./ProfileAccountEdit";
-import ProfileMyShares from "./ProfileMyShares";
-import ProfileSavedPlaces from "./ProfileSavedPlaces";
+import AdminManagePosts from "./AdminManagePosts";
+import AdminManageUsers from "./AdminManageUsers";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -55,9 +53,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     padding: theme.spacing(2),
   },
+
+  tabs: {
+    marginBottom: "2rem",
+  },
 }));
 
-const Profile = () => {
+const Admin = () => {
   // Use this index value to navigate to certain tab from other pages
   const { profileTabIdx } = useSelector((state: RootState) => {
     return {
@@ -79,40 +81,28 @@ const Profile = () => {
   return (
     <div className={classes.root}>
       <Typography className={classes.title} component="h4" variant="h4">
-        Hello, User
+        Admin
       </Typography>
       {/* Tab Component */}
       <Tabs
+        className={classes.tabs}
         value={value}
         onChange={handleChange}
         aria-label="simple tabs example"
         indicatorColor="primary"
-        centered
       >
-        <Tab label="Account" {...a11yProps(0)} />
-        <Tab label="My Shares" {...a11yProps(1)} />
-        <Tab label="Saved Places" {...a11yProps(2)} />
-        <Tab
-          style={{ display: "none" }}
-          label="Edit Account"
-          {...a11yProps(3)}
-        />
+        <Tab label="Manage Users" {...a11yProps(0)} />
+        <Tab label="Manage Posts" {...a11yProps(1)} />
       </Tabs>
       {/* Tab List */}
       <TabPanel value={value} index={0}>
-        <ProfileAccountPage handleChange={handleChange} tabChangeIdx={3} />
+        <AdminManageUsers />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ProfileMyShares />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <ProfileSavedPlaces />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <ProfileAccountEdit />
+        <AdminManagePosts />
       </TabPanel>
     </div>
   );
 };
 
-export default Profile;
+export default Admin;

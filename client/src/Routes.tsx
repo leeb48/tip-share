@@ -1,3 +1,4 @@
+import Admin from "components/admin/Admin";
 import LoginForm from "components/auth/LoginForm";
 import RegisterForm from "components/auth/RegisterForm";
 import Profile from "components/profile/Profile";
@@ -21,6 +22,7 @@ const Routes = () => {
         <Route exact path="/tip-post/new" component={TipPostForm} />
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/profile-edit" component={ProfileAccountEdit} />
+        <Route exact path="/admin" component={Admin} />
       </Switch>
     </div>
   );
