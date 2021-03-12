@@ -13,8 +13,7 @@ import { useTheme, withTheme } from "@material-ui/styles";
 import styled from "styled-components";
 
 const TipInfoPaper = styled(Paper)`
-  padding: 8px;
-  margin-right: 5px;
+  padding: 8px 15px;
 `;
 
 const RootGrid = withTheme(
@@ -67,6 +66,12 @@ const StyledFlagIcon = styled(FlagIcon)`
   height: 13;
 `;
 
+const TipInfoGrid = withTheme(styled(Grid)`
+  ${(props) => props.theme.breakpoints.down("sm")} {
+    flex-direction: column;
+  }
+`);
+
 const ProfileMySharesItem = () => {
   const muiTheme = useTheme();
 
@@ -82,17 +87,41 @@ const ProfileMySharesItem = () => {
               container
               alignItems="center"
               justify="space-evenly"
-              direction="column"
+              direction="row"
             >
-              <Grid item>
-                <TipInfoPaper>Low: $10/hr</TipInfoPaper>
-              </Grid>
-              <Grid item>
-                <TipInfoPaper>Avg: $15/hr</TipInfoPaper>
-              </Grid>
-              <Grid item>
-                <TipInfoPaper>High: $120/hr</TipInfoPaper>
-              </Grid>
+              <TipInfoGrid
+                xs={4}
+                md={12}
+                item
+                container
+                justify="space-evenly"
+                alignItems="center"
+              >
+                <Typography variant="subtitle1">Lowest</Typography>
+                <TipInfoPaper>$10/hr</TipInfoPaper>
+              </TipInfoGrid>
+              <TipInfoGrid
+                xs={4}
+                md={12}
+                item
+                container
+                justify="space-evenly"
+                alignItems="center"
+              >
+                <Typography variant="subtitle1">Typical</Typography>
+                <TipInfoPaper>$15/hr</TipInfoPaper>
+              </TipInfoGrid>
+              <TipInfoGrid
+                xs={4}
+                md={12}
+                item
+                container
+                justify="space-evenly"
+                alignItems="center"
+              >
+                <Typography variant="subtitle1">Highest</Typography>
+                <TipInfoPaper>$120/hr</TipInfoPaper>
+              </TipInfoGrid>
             </UserSharePost>
             <Grid item sm={12} md={9} container direction="column" spacing={2}>
               <Grid item>

@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     tipInfoPaper: {
-      padding: "8px",
+      padding: "8px 15px",
       marginRight: "5px",
     },
   })
@@ -120,15 +120,39 @@ const TipPostHeader = () => {
               <span style={{ fontWeight: "bold" }}>Operational:</span> Yes
             </Typography>
           </Grid>
-          <Grid justify="center" item container wrap="nowrap">
-            <Grid item>
-              <Paper className={classes.tipInfoPaper}>Low: $10/hr</Paper>
+          <Grid justify="space-evenly" item container wrap="nowrap">
+            <Grid
+              xs={4}
+              item
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+              <Typography variant="subtitle1">Lowest</Typography>
+              <Paper className={classes.tipInfoPaper}>$18/hr</Paper>
             </Grid>
-            <Grid item>
-              <Paper className={classes.tipInfoPaper}>Avg: $15/hr</Paper>
+            <Grid
+              xs={4}
+              item
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+              <Typography variant="subtitle1">Typical</Typography>
+              <Paper className={classes.tipInfoPaper}>$24/hr</Paper>
             </Grid>
-            <Grid item>
-              <Paper className={classes.tipInfoPaper}>High: $120/hr</Paper>
+            <Grid
+              xs={4}
+              item
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+              <Typography variant="subtitle1">Highest</Typography>
+              <Paper className={classes.tipInfoPaper}>$35/hr</Paper>
             </Grid>
           </Grid>
         </Grid>

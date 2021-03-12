@@ -16,7 +16,7 @@ const ResultItem = withTheme(
     width: 100%;
     height: 220px;
     ${(props) => props.theme.breakpoints.down("xs")} {
-      height: 150px;
+      height: 180px;
     }
 
     cursor: pointer;
@@ -68,8 +68,7 @@ const TopRow = styled(Grid)``;
 const BottomRow = styled(Grid)``;
 
 const TipInfoPaper = styled(Paper)`
-  padding: 8px;
-  margin-right: 5px;
+  padding: 8px 15px;
 `;
 
 const StyledSaveIcon = styled(SaveIcon)`
@@ -139,16 +138,43 @@ const ProfileSavedPlacesItem = () => {
                     </TopRow>
                     {/* Bottom Row */}
                     <BottomRow item>
-                      <Grid justify="center" container>
-                        <TipInfoPaper>
-                          <Grid item>Highest: $18</Grid>
-                        </TipInfoPaper>
-                        <TipInfoPaper>
-                          <Grid item>Average: $12</Grid>
-                        </TipInfoPaper>
-                        <TipInfoPaper>
-                          <Grid item>Lowest: $8</Grid>
-                        </TipInfoPaper>
+                      <Grid justify="space-evenly" container>
+                        <Grid
+                          xs={4}
+                          item
+                          container
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                        >
+                          <Typography variant="subtitle1">Lowest</Typography>
+
+                          <TipInfoPaper>$18/hr</TipInfoPaper>
+                        </Grid>
+                        <Grid
+                          xs={4}
+                          item
+                          container
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                        >
+                          <Typography variant="subtitle1">Lowest</Typography>
+
+                          <TipInfoPaper>$18/hr</TipInfoPaper>
+                        </Grid>
+                        <Grid
+                          xs={4}
+                          item
+                          container
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                        >
+                          <Typography variant="subtitle1">Lowest</Typography>
+
+                          <TipInfoPaper>$18/hr</TipInfoPaper>
+                        </Grid>
                       </Grid>
                     </BottomRow>
                   </MiddleColumn>
