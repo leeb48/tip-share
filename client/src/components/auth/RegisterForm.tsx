@@ -1,13 +1,12 @@
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import TextFieldWithError from "components/utils/TextFieldWithError";
+import TextFieldWithError from "components/utils/inputUtils/TextFieldWithError";
 import { Form, Formik } from "formik";
 import React from "react";
 import * as yup from "yup";
@@ -42,7 +41,6 @@ const RegisterForm = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

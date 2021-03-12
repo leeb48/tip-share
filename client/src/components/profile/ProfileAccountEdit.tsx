@@ -1,5 +1,5 @@
 import { Button, Grid, Typography } from "@material-ui/core";
-import AccountEditCustomTextField from "components/utils/AccountEditCustomTextField";
+import AccountEditCustomTextField from "components/utils/inputUtils/AccountEditCustomTextField";
 import { Form, Formik } from "formik";
 import React, { Fragment } from "react";
 import styled from "styled-components";
@@ -107,10 +107,7 @@ const ProfileAccountEdit = () => {
                       <Typography variant="body1">New Username</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <StyledTextField
-                        name="newUsername"
-                        variant="outlined"
-                      />
+                      <StyledTextField name="newUsername" variant="outlined" />
                     </Grid>
 
                     <Grid item xs={6}>

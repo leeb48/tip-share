@@ -7,8 +7,8 @@ import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import NormalCheckbox from "components/utils/NormalCheckbox";
-import TextFieldWithError from "components/utils/TextFieldWithError";
+import NormalCheckbox from "components/utils/inputUtils/NormalCheckbox";
+import TextFieldWithError from "components/utils/inputUtils/TextFieldWithError";
 import { Form, Formik } from "formik";
 import React from "react";
 

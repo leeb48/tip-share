@@ -11,6 +11,7 @@ const TextFieldWithError: React.FC<TextFieldWithErrorProps> = ({
   fullWidth,
   autoFocus,
   margin,
+  size,
   ...props
 }) => {
   const [field, meta] = useField<{}>(props);
@@ -20,6 +21,7 @@ const TextFieldWithError: React.FC<TextFieldWithErrorProps> = ({
   return (
     <TextField
       {...field}
+      size={size}
       fullWidth={fullWidth}
       autoFocus={autoFocus}
       margin={margin}
