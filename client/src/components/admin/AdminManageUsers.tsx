@@ -36,7 +36,7 @@ const BlockBtn = styled(Button)`
 `;
 
 const AdminManageUsers = () => {
-  const usernames = ["one", "two", "three", "four", "five"];
+  const usernames = ["one", "two", "three", "four", "five", "six"];
 
   const DisplayUserList = usernames.map((user) => (
     <UserListItem key={user} item container xs={12} alignItems="center">
