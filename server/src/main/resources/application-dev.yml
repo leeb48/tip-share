@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/tipsharedev
+    username: postgres
+    password: postgres
+    hikari:
+      auto-commit: false
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.springframework.security.web.FilterChainProxy: DEBUG
