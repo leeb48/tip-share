@@ -19,11 +19,12 @@ import java.util.concurrent.TimeUnit;
 import static com.projects.tipshare.security.SecurityConstants.*;
 
 @Component
-public class TokenProvider {
+public class JWTProvider {
 
-    public String generateToken(Authentication authentication, boolean rememberMe) {
+    private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
-        SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+    public String generateJWT(Authentication authentication, boolean rememberMe) {
+
 
         Date now = new Date(System.currentTimeMillis());
         Date expireDate = rememberMe ?
@@ -41,10 +42,11 @@ public class TokenProvider {
 
     }
 
-    public boolean validateToken(String jwt) {
+    public boolean validateJWT(String jwt) {
 
         try {
-            Jwts.parserBuilder().setSigningKey(SECRET).build().parseClaimsJws(jwt);
+
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt);
 
 
             return true;
@@ -60,23 +62,37 @@ public class TokenProvider {
         }
 
         return false;
-
     }
 
-    public String getUsernameFromJwt(String jwt) {
+    public String getUsernameFromJWT(String jwt) {
+
 
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(SECRET)
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(jwt)
                 .getBody();
+
 
         return String.valueOf(claims.get("username"));
 
     }
 
-    public String getJwtFromRequestHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HEADER_STRING);
+    public String getAuthoritiesFromJWT(String jwt) {
+
+
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody();
+
+        return (String) claims.get("authorities");
+
+    }
+
+    public String getJWTFromRequestHeader(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_PREFIX)) {
             return bearerToken.substring(7);

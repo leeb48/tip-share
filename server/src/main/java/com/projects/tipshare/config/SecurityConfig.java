@@ -1,14 +1,18 @@
 package com.projects.tipshare.config;
 
 import com.projects.tipshare.security.AuthoritiesConstants;
+import com.projects.tipshare.security.jwt.JWTProvider;
+import com.projects.tipshare.security.jwt.JWTValidateFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -24,10 +28,18 @@ import java.util.Collections;
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    private final JWTProvider jwtProvider;
+
+    public SecurityConfig(JWTProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -43,15 +55,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }
         }).and()
 
+                .addFilterAfter(new JWTValidateFilter(jwtProvider), BasicAuthenticationFilter.class)
+
                 .csrf().disable()
 
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+
                 .authorizeRequests()
-                .mvcMatchers("/api/auth/**").permitAll()
+                .mvcMatchers("/api/auth/register").permitAll()
+                .mvcMatchers("/api/auth/login").permitAll()
                 .mvcMatchers("/api/test/admin").hasRole(AuthoritiesConstants.ADMIN)
                 .mvcMatchers("/api/test/user").hasRole(AuthoritiesConstants.USER)
                 .anyRequest().authenticated()
                 .and()
-
                 .httpBasic();
     }
 }
