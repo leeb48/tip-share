@@ -6,7 +6,9 @@ import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { useAppDispatch } from "app/store";
 import TextFieldWithError from "components/utils/inputUtils/TextFieldWithError";
+import { registerUser } from "features/auth/authSlice";
 import { Form, Formik } from "formik";
 import React from "react";
 import * as yup from "yup";
@@ -33,11 +35,12 @@ const useStyles = makeStyles((theme) => ({
 
 const validationSchema = yup.object({
   username: yup.string().required("Username is required").min(5).max(15),
-  password: yup.string().required().min(6).max(15),
+  password: yup.string().required().min(5).max(15),
 });
 
 const RegisterForm = () => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -53,10 +56,16 @@ const RegisterForm = () => {
             username: "",
             password: "",
           }}
-          onSubmit={(data, {}) => {}}
+          onSubmit={(data, actions) => {
+            actions.setSubmitting(true);
+
+            dispatch(registerUser(data));
+
+            actions.setSubmitting(false);
+          }}
           validationSchema={validationSchema}
         >
-          {() => (
+          {(props) => (
             <Form className={classes.form}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -91,6 +100,7 @@ const RegisterForm = () => {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                disabled={props.isSubmitting}
               >
                 Sign Up
               </Button>

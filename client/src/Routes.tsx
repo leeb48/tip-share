@@ -8,7 +8,7 @@ import TipPostMain from "components/tip-posts/TipPostMain";
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import SearchResults from "./components/search/SearchResults";
-import Landing from "./layout/Landing";
+import Landing from "./components/layout/Landing";
 
 const Routes = () => {
   return (
