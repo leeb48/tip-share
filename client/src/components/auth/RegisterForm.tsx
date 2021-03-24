@@ -7,10 +7,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useAppDispatch } from "app/store";
-import TextFieldWithError from "components/utils/inputUtils/TextFieldWithError";
+import TextFieldWithError from "components/componentUtils/inputUtils/TextFieldWithError";
 import { registerUser } from "features/auth/authSlice";
 import { Form, Formik } from "formik";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,6 +42,7 @@ const validationSchema = yup.object({
 const RegisterForm = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -59,9 +61,12 @@ const RegisterForm = () => {
           onSubmit={(data, actions) => {
             actions.setSubmitting(true);
 
-            dispatch(registerUser(data));
+            // stop users from spamming the register button
+            setTimeout(() => {
+              actions.setSubmitting(false);
+            }, 1000);
 
-            actions.setSubmitting(false);
+            dispatch(registerUser(data, history));
           }}
           validationSchema={validationSchema}
         >

@@ -1,7 +1,7 @@
 import { Button, Grid, Typography } from "@material-ui/core";
 import MoneyIcon from "@material-ui/icons/AttachMoney";
-import CommentTextField from "components/utils/inputUtils/CommentTextField";
-import TextFieldWithError from "components/utils/inputUtils/TextFieldWithError";
+import CommentTextField from "components/componentUtils/inputUtils/CommentTextField";
+import TextFieldWithError from "components/componentUtils/inputUtils/TextFieldWithError";
 import { Form, Formik } from "formik";
 import React from "react";
 import styled from "styled-components";

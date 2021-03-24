@@ -1,8 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "app/store";
 import { springAxios } from "config/springAxios";
 import { setAlert } from "features/alerts/alertSlice";
-import { RegisterUserDto } from "./auth.dto";
+import { getErrorMessage } from "features/featuresUtils/getErrorMessage";
+import { LoginUserDto, RegisterUserDto } from "./auth.dto";
 
 export type AuthState = {
   username: string;
@@ -22,20 +23,30 @@ const AuthSlice = createSlice({
   reducers: {},
 });
 
+export const {} = AuthSlice.actions;
+
+export default AuthSlice.reducer;
+
 // Thunks
-export const registerUser = (data: RegisterUserDto): AppThunk => async (
-  dispatch
-) => {
+export const registerUser = (
+  data: RegisterUserDto,
+  history: any
+): AppThunk => async (dispatch) => {
   try {
     const res = await springAxios.post<string>("/auth/register", data);
 
     dispatch(setAlert({ alertType: "success", message: res.data }));
+
+    history.push("/login");
   } catch (error) {
-    if (error.response) {
-      // display the first error message
-      const errors = error.response.data as { [field: string]: string };
-      const errorMessage = Object.values(errors)[0];
-      dispatch(setAlert({ alertType: "error", message: errorMessage }));
-    }
+    const errorMessage = getErrorMessage(error);
+    dispatch(setAlert({ alertType: "error", message: errorMessage }));
   }
+};
+
+export const loginUser = (data: LoginUserDto, history: any): AppThunk => async (
+  dispatch
+) => {
+  try {
+  } catch (error) {}
 };
