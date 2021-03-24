@@ -65,7 +65,6 @@ const SearchResultItem = () => {
 
   const bookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log("Bookmark Click");
   };
 
   return (
@@ -73,7 +72,6 @@ const SearchResultItem = () => {
       {/* Result Item */}
       <Grid item>
         <Paper
-          onClick={() => console.log("Paper Click")}
           className={`${classes.fullWidth} ${classes.resultPaper}`}
           variant="outlined"
         >

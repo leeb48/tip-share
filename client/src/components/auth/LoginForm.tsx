@@ -7,10 +7,15 @@ import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { useAppDispatch } from "app/store";
 import NormalCheckbox from "components/componentUtils/inputUtils/NormalCheckbox";
 import TextFieldWithError from "components/componentUtils/inputUtils/TextFieldWithError";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router";
+import { LoginUserDto } from "./auth.dto";
+import { loginUser } from "./authSlice";
+import * as yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,8 +37,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const initialValues: LoginUserDto = {
+  username: "",
+  password: "",
+  rememberMe: false,
+};
+
+const validationSchema = yup.object({
+  username: yup.string().required(),
+  password: yup.string().required(),
+});
+
 const Login = () => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+
+  let timer: ReturnType<typeof setTimeout> | null = null;
+
+  useEffect(() => {
+    return () => clearTimeout(timer as NodeJS.Timeout);
+  }, [timer]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -46,14 +70,19 @@ const Login = () => {
           Login
         </Typography>
         <Formik
-          initialValues={{
-            username: "",
-            password: "",
-            rememberMe: false,
+          initialValues={initialValues}
+          onSubmit={(values, actions) => {
+            actions.setSubmitting(true);
+
+            timer = setTimeout(() => {
+              actions.setSubmitting(false);
+            }, 1000);
+
+            dispatch(loginUser(values, history));
           }}
-          onSubmit={(values) => {}}
+          validationSchema={validationSchema}
         >
-          {() => (
+          {({ isSubmitting }) => (
             <Form>
               <TextFieldWithError
                 variant="outlined"
@@ -81,6 +110,7 @@ const Login = () => {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                disabled={isSubmitting}
               >
                 Sign In
               </Button>

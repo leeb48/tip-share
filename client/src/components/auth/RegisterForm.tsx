@@ -7,10 +7,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useAppDispatch } from "app/store";
-import TextFieldWithError from "components/componentUtils/inputUtils/TextFieldWithError";
 import { registerUser } from "components/auth/authSlice";
+import TextFieldWithError from "components/componentUtils/inputUtils/TextFieldWithError";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 
@@ -44,6 +44,14 @@ const RegisterForm = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
+  let timer: NodeJS.Timeout | null = null;
+
+  // clean up setTimeout when a successful registration occurs
+  // and the component dismounts
+  useEffect(() => {
+    return () => clearTimeout(timer as NodeJS.Timeout);
+  }, [timer]);
+
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -60,9 +68,8 @@ const RegisterForm = () => {
           }}
           onSubmit={(data, actions) => {
             actions.setSubmitting(true);
-
             // stop users from spamming the register button
-            setTimeout(() => {
+            timer = setTimeout(() => {
               actions.setSubmitting(false);
             }, 1000);
 

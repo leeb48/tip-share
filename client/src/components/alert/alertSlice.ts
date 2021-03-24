@@ -23,28 +23,28 @@ const initialState: AlertsState = {
 };
 
 // Case Reducers
-const setInputErrorsCaseReducer: CaseReducer<
+const setInputErrorsReducer: CaseReducer<
   AlertsState,
   PayloadAction<InputErrors>
 > = (state, { payload }) => {
   state.inputErrors = payload;
 };
 
-const clearInputErrorCaseReducer: CaseReducer<AlertsState> = (state) => {
+const clearInputErrorReducer: CaseReducer<AlertsState> = (state) => {
   state.inputErrors = {};
 };
 
-const setAlertCaseReducer: CaseReducer<AlertsState, PayloadAction<Alert>> = (
+const setAlertReducer: CaseReducer<AlertsState, PayloadAction<Alert>> = (
   state,
   { payload }
 ) => {
   state.alerts.push(payload);
 };
 
-const removeAlertCaseReducer: CaseReducer<
-  AlertsState,
-  PayloadAction<string>
-> = (state, { payload }) => {
+const removeAlertReducer: CaseReducer<AlertsState, PayloadAction<string>> = (
+  state,
+  { payload }
+) => {
   const index = state.alerts.findIndex((alert) => alert.uuid === payload);
   if (index !== -1) state.alerts.splice(index, 1);
 };
@@ -53,10 +53,10 @@ const alertsSlice = createSlice({
   name: "alerts",
   initialState,
   reducers: {
-    setInputErrorsAction: setInputErrorsCaseReducer,
-    clearInputErrorsAction: clearInputErrorCaseReducer,
-    setAlertAction: setAlertCaseReducer,
-    removeAlertAction: removeAlertCaseReducer,
+    setInputErrorsAction: setInputErrorsReducer,
+    clearInputErrorsAction: clearInputErrorReducer,
+    setAlertAction: setAlertReducer,
+    removeAlertAction: removeAlertReducer,
   },
 });
 

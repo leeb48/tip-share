@@ -201,14 +201,14 @@ const Navbar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
+      <MenuItem component={Link} to={"/register"}>
+        <IconButton color="inherit">
           <RegisterIcon />
         </IconButton>
         <p>Register</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
+      <MenuItem component={Link} to={"/login"}>
+        <IconButton color="inherit">
           <LoginIcon />
         </IconButton>
         <p>Login</p>
@@ -294,8 +294,12 @@ const Navbar = () => {
           <div className={classes.grow} />
 
           <div className={classes.sectionDesktop}>
-            <Button color="inherit">Register</Button>
-            <Button color="inherit">Login</Button>
+            <Button component={Link} to="/register" color="inherit">
+              Register
+            </Button>
+            <Button component={Link} to="/login" color="inherit">
+              Login
+            </Button>
             <IconButton
               edge="end"
               aria-label="account of current user"
