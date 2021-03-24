@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useAppDispatch } from "app/store";
 import TextFieldWithError from "components/componentUtils/inputUtils/TextFieldWithError";
-import { registerUser } from "features/auth/authSlice";
+import { registerUser } from "components/auth/authSlice";
 import { Form, Formik } from "formik";
 import React from "react";
 import { useHistory } from "react-router-dom";

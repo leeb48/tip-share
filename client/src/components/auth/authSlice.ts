@@ -1,8 +1,8 @@
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "app/store";
 import { springAxios } from "config/springAxios";
-import { setAlert } from "features/alerts/alertSlice";
-import { getErrorMessage } from "features/featuresUtils/getErrorMessage";
+import { setAlert } from "components/alert/alertSlice";
+import { getErrorMessage } from "components/componentUtils/getErrorMessage";
 import { LoginUserDto, RegisterUserDto } from "./auth.dto";
 
 export type AuthState = {

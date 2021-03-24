@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import alertsReducer from "features/alerts/alertSlice";
-import profileReducer from "features/profile/profileSlice";
-import authReducer from "features/auth/authSlice";
+import alertsReducer from "components/alert/alertSlice";
+import profileReducer from "components/profile/profileSlice";
+import authReducer from "components/auth/authSlice";
 
 const rootReducer = combineReducers({
   alerts: alertsReducer,

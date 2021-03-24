@@ -17,7 +17,7 @@ import LoginIcon from "@material-ui/icons/LockOpen";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import RegisterIcon from "@material-ui/icons/PersonAdd";
 import { useAppDispatch } from "app/store";
-import { changeProfileTabIdx } from "features/profile/profileSlice";
+import { changeProfileTabIdx } from "components/profile/profileSlice";
 import React from "react";
 import { Link } from "react-router-dom";
 
