@@ -232,7 +232,12 @@ const Navbar = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            <IconButton className={classes.titleBtn} color="inherit">
+            <IconButton
+              component={Link}
+              to="/"
+              className={classes.titleBtn}
+              color="inherit"
+            >
               TipShare
             </IconButton>
           </Typography>
