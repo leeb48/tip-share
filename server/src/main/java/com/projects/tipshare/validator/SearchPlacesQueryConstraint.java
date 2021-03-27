@@ -10,14 +10,13 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = SearchPlacesValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SearchPlacesConstraint {
+public @interface SearchPlacesQueryConstraint {
 
     String message() default "Must have at least one search field";
 
     String placeName();
 
     String placeAddr();
-
 
     Class<?>[] groups() default {};
 

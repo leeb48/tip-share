@@ -55,7 +55,7 @@ public class AuthController {
                                           BindingResult result) throws JSONException {
 
         if (result.hasErrors()) {
-            return validationService.createErrorResponse(result);
+            return validationService.createFieldErrorResponse(result);
         }
 
         userService.registerUser(registerUserDto);
@@ -75,7 +75,7 @@ public class AuthController {
 
 
         if (result.hasErrors()) {
-            return validationService.createErrorResponse(result);
+            return validationService.createFieldErrorResponse(result);
         }
 
         try {
