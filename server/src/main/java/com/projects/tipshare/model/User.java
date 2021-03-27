@@ -41,8 +41,5 @@ public class User extends BaseEntity {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
-    public boolean isActivated() {
-        return activated;
-    }
 
 }

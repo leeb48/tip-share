@@ -29,6 +29,8 @@ public class JWTValidateFilter extends OncePerRequestFilter {
 
         String jwt = jwtProvider.getJWTFromRequestHeader(request);
 
+        System.out.println(jwtProvider.validateJWT(jwt));
+
         try {
 
             if (StringUtils.hasText(jwt) && jwtProvider.validateJWT(jwt)) {

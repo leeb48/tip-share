@@ -56,8 +56,11 @@ public class UserService {
         Set<Authority> authorities = new HashSet<>();
         authorityRepo.findById(USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
-        newUser.setActivated(true);
         userRepo.save(newUser);
+    }
+
+    public User findUserByUsername(String username) {
+        return userRepo.findByUsername(username).orElse(null);
     }
 
     /*

@@ -1,5 +1,6 @@
 package com.projects.tipshare.config;
 
+import com.google.common.collect.ImmutableList;
 import com.projects.tipshare.security.AuthoritiesConstants;
 import com.projects.tipshare.security.jwt.JWTProvider;
 import com.projects.tipshare.security.jwt.JWTValidateFilter;
@@ -47,8 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(Collections.singletonList("*"));
+                // TODO: change allowed origins during production!!!
+                config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
                 config.setAllowedMethods(Collections.singletonList("*"));
+                config.setAllowedHeaders(ImmutableList.of("Authorization", "Cache-Control", "Content-Type"));
                 config.setAllowCredentials(true);
                 config.setMaxAge(3600L);
                 return config;

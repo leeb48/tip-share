@@ -15,7 +15,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -57,16 +60,14 @@ public class AuthController {
 
         userService.registerUser(registerUserDto);
 
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("userRegistered", registerUserDto.getUsername() + " has been registered.");
-
-        return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.OK);
+        return ResponseEntity.ok(registerUserDto.getUsername() + " has been registered."
+                + " Please login with your new account.");
     }
 
     /**
      * @param loginUserDto contains user login info
      * @param result       contains any validation errors in the request body
-     * @return send back a valid JWT
+     * @return sends back a valid JWT or login fail message
      */
 
     @PostMapping("/login")
@@ -76,31 +77,38 @@ public class AuthController {
             return validationService.createErrorResponse(result);
         }
 
-        // perform authentication
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                loginUserDto.getUsername(),
-                loginUserDto.getPassword()
-        );
+        try {
 
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            // perform authentication
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    loginUserDto.getUsername(),
+                    loginUserDto.getPassword()
+            );
+
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+            if (authentication != null) {
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
-        // create jwt and append it to header
-        String jwt = jwtProvider.generateJWT(authentication, loginUserDto.isRememberMe());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(AUTHORIZATION_HEADER, TOKEN_PREFIX + jwt);
+                // create jwt and append it to header
+                String jwt = jwtProvider.generateJWT(authentication, loginUserDto.isRememberMe());
+                HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.add(AUTHORIZATION_HEADER, TOKEN_PREFIX + jwt);
+
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("jwt", jwt);
+
+                return new ResponseEntity<>(jsonResponse.toString(), httpHeaders, HttpStatus.OK);
+            }
+        } catch (Exception ignored) {
+        }
 
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("jwt", jwt);
+        jsonResponse.put("loginFail", "Login Failed");
 
-        return new ResponseEntity<>(jsonResponse.toString(), httpHeaders, HttpStatus.OK);
-    }
+        return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.UNAUTHORIZED);
 
-    @GetMapping("/user-detail")
-    public ResponseEntity<?> getUserDetail() {
-
-        return ResponseEntity.ok("UserDetailRoute");
     }
 
 }
