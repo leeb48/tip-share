@@ -73,6 +73,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginUserDto loginUserDto, BindingResult result) throws JSONException {
 
+
         if (result.hasErrors()) {
             return validationService.createErrorResponse(result);
         }
@@ -86,6 +87,7 @@ public class AuthController {
             );
 
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
 
             if (authentication != null) {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
