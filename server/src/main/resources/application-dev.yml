@@ -21,3 +21,4 @@ logging:
 
 google-places:
   apiKey: ${API_KEY}
+  baseURL: ${GOOGLE_PLACES_BASE_URL}
