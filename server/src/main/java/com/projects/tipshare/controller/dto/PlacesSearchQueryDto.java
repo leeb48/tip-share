@@ -6,12 +6,10 @@ import lombok.Data;
 @Data
 @SearchPlacesQueryConstraint(
         placeName = "placeName",
-        placeAddr = "placeAddr",
-        message = "must have at least one search field"
+        placeAddr = "placeAddr"
 )
 public class PlacesSearchQueryDto {
 
     private String placeName;
     private String placeAddr;
-    private String pageToken;
 }

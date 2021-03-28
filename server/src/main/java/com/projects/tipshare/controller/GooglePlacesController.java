@@ -1,25 +1,26 @@
 package com.projects.tipshare.controller;
 
+import com.google.maps.GeoApiContext;
+import com.google.maps.PlacesApi;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.PlacesSearchResponse;
 import com.projects.tipshare.config.GooglePlacesProperties;
 import com.projects.tipshare.controller.dto.PlacesSearchQueryDto;
-import com.projects.tipshare.model.googleplaces.GooglePlacesResponse;
+import com.projects.tipshare.exception.googleapiexcpetion.SearchFailedException;
 import com.projects.tipshare.service.ValidationService;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/places")
 public class GooglePlacesController {
-    //https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Sydney&key=YOUR_API_KEY
 
     private final ValidationService validationService;
     private final GooglePlacesProperties googlePlacesProperties;
@@ -29,38 +30,32 @@ public class GooglePlacesController {
         this.googlePlacesProperties = googlePlacesProperties;
     }
 
+    /**
+     * @param queryDto search query term can be either address or place name, but it must have at least one search term
+     * @param result   catches any validation errors from request body
+     * @return returns the search result along with next page token for pagination if present
+     */
     @PostMapping
-    public ResponseEntity<?> searchPlaces(@Valid @RequestBody PlacesSearchQueryDto queryDto, BindingResult result) {
+    @RequestMapping("/search")
+    public ResponseEntity<?> searchPlaces(@Valid @RequestBody PlacesSearchQueryDto queryDto, BindingResult result) throws InterruptedException, ApiException, IOException {
 
         if (result.hasErrors()) {
-
             return validationService.createObjectErrorResponse(result);
-
         }
 
-        String apiKey = googlePlacesProperties.getApiKey();
-        String baseURL = googlePlacesProperties.getBaseURL();
-        String pageToken = queryDto.getPageToken();
+        String placeName = queryDto.getPlaceName();
+        String placeAddr = queryDto.getPlaceAddr();
 
-        // build search query
-        String searchQuery = "/json?query="
-                + queryDto.getPlaceName()
-                + " " + queryDto.getPlaceAddr()
-                + "&key=" + apiKey
-                + "&pagetoken=" + pageToken;
+        try {
+            GeoApiContext context = new GeoApiContext.Builder()
+                    .apiKey(googlePlacesProperties.getApiKey())
+                    .build();
+            PlacesSearchResponse placesSearchResponse = PlacesApi.textSearchQuery(context, placeName + " " + placeAddr).await();
 
-        WebClient webClient = WebClient.builder()
-                .baseUrl(baseURL)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
+            return ResponseEntity.ok(placesSearchResponse);
 
-        GooglePlacesResponse res = webClient.get()
-                .uri(searchQuery)
-                .retrieve()
-                .bodyToMono(GooglePlacesResponse.class)
-                .block();
-
-
-        return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            throw new SearchFailedException("Search failed");
+        }
     }
 }
