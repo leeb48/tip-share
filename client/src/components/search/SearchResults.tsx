@@ -29,6 +29,10 @@ const LoadingSpinner = styled(CircularProgress)`
   margin-top: 30%;
 `;
 
+const NoResultsMessage = styled(Typography)`
+  margin-top: 30%;
+`;
+
 const SearchResults = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -51,31 +55,46 @@ const SearchResults = () => {
     dispatch(loadNextPage({ nextPageToken }));
   };
 
+  const displaySearchResults =
+    searchResults &&
+    searchResults.length > 0 &&
+    searchResults.map((result) => (
+      <SearchResultItem key={result.placeId} result={result} />
+    ));
+
+  const displayNextPageBtn = nextPageToken && (
+    <LoadMoreButton
+      onClick={handleLoadNextPage}
+      variant="outlined"
+      color="primary"
+    >
+      {nextPageLoading ? (
+        <CircularProgress />
+      ) : (
+        <Typography variant="h6">Load More Places</Typography>
+      )}
+    </LoadMoreButton>
+  );
+
+  const displayNoResultsFound = !searchLoading &&
+    searchResults &&
+    searchResults.length === 0 && (
+      <NoResultsMessage variant="h4" align="center">
+        No results, please try another search
+      </NoResultsMessage>
+    );
+
   return (
     <Grid container justify="center" className={classes.root}>
       {searchLoading ? (
         <LoadingSpinner />
       ) : (
         <Grid className={classes.resultItemRoot} container direction="column">
-          {searchResults &&
-            searchResults.length > 0 &&
-            searchResults.map((result) => (
-              <SearchResultItem key={result.placeId} result={result} />
-            ))}
+          {displayNoResultsFound}
 
-          {nextPageToken && (
-            <LoadMoreButton
-              onClick={handleLoadNextPage}
-              variant="outlined"
-              color="primary"
-            >
-              {nextPageLoading ? (
-                <CircularProgress />
-              ) : (
-                <Typography variant="h6">Load More Places</Typography>
-              )}
-            </LoadMoreButton>
-          )}
+          {displaySearchResults}
+
+          {displayNextPageBtn}
         </Grid>
       )}
     </Grid>
