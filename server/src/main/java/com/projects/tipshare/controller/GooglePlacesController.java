@@ -4,9 +4,10 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.PlacesApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.PlacesSearchResponse;
-import com.projects.tipshare.config.GooglePlacesProperties;
+import com.google.maps.model.PlacesSearchResult;
 import com.projects.tipshare.controller.dto.PlacesSearchQueryDto;
 import com.projects.tipshare.exception.googleapiexcpetion.SearchFailedException;
+import com.projects.tipshare.service.GooglePlacesService;
 import com.projects.tipshare.service.ValidationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,11 +24,13 @@ import java.io.IOException;
 public class GooglePlacesController {
 
     private final ValidationService validationService;
-    private final GooglePlacesProperties googlePlacesProperties;
+    private final GeoApiContext context;
+    private final GooglePlacesService googlePlacesService;
 
-    public GooglePlacesController(ValidationService validationService, GooglePlacesProperties googlePlacesProperties) {
+    public GooglePlacesController(ValidationService validationService, GeoApiContext context, GooglePlacesService googlePlacesService) {
         this.validationService = validationService;
-        this.googlePlacesProperties = googlePlacesProperties;
+        this.context = context;
+        this.googlePlacesService = googlePlacesService;
     }
 
     /**
@@ -47,13 +50,14 @@ public class GooglePlacesController {
         String placeAddr = queryDto.getPlaceAddr();
 
         try {
-            GeoApiContext context = new GeoApiContext.Builder()
-                    .apiKey(googlePlacesProperties.getApiKey())
-                    .build();
             PlacesSearchResponse placesSearchResponse = PlacesApi.textSearchQuery(context, placeName + " " + placeAddr).await();
 
-            return ResponseEntity.ok(placesSearchResponse);
+            // replace the photoReferences with actual image urls
+            for (PlacesSearchResult place : placesSearchResponse.results) {
+                place.photos[0].photoReference = googlePlacesService.getImageUrl(place.photos[0].photoReference);
+            }
 
+            return ResponseEntity.ok(placesSearchResponse);
         } catch (Exception e) {
             throw new SearchFailedException("Search failed");
         }

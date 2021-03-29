@@ -8,8 +8,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "google-places")
 @Data
 public class GooglePlacesProperties {
-
     private String apiKey;
-
-    private String baseURL;
 }
