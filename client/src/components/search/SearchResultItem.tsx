@@ -1,9 +1,14 @@
 import { Grid, IconButton, Paper, Typography } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import SaveIcon from "@material-ui/icons/BookmarkBorder";
+import { Result } from "components/interfaces/GooglePlacesInterface";
 import React, { Fragment } from "react";
 
-const useStyles = makeStyles((theme: Theme) =>
+interface Props {
+  result: Result;
+}
+
+const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
   createStyles({
     gridHeight: {
       height: "100%",
@@ -16,7 +21,8 @@ const useStyles = makeStyles((theme: Theme) =>
       height: "220px",
 
       [theme.breakpoints.down("xs")]: {
-        height: "160px",
+        height: "180px",
+        padding: "0px 8px",
       },
       cursor: "pointer",
       padding: 0,
@@ -43,7 +49,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
       marginTop: "15px",
       marginBottom: "10px",
-      backgroundImage: `url(https://lh3.googleusercontent.com/p/AF1QipOD7S2BF3pTieo2TrZ0-N41sKDp88hXU0eRb7Ty=s1600-w400)`,
+      backgroundImage: ({ result }) =>
+        `url(${result.photos[0].photoReference})`,
       backgroundSize: "cover",
       borderRadius: "10px ",
     },
@@ -60,8 +67,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const SearchResultItem = () => {
-  const classes = useStyles();
+const SearchResultItem: React.FC<Props> = ({ result }) => {
+  const classes = useStyles({ result });
 
   const bookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -108,13 +115,15 @@ const SearchResultItem = () => {
                 {/* Top Row */}
                 <Grid item>
                   <Typography component="p" variant="h6">
-                    Wolf + Sparrow
+                    {result.name}
                   </Typography>
                   <Typography component="p" variant="body1">
-                    4480 Spring Mountain Rd #100, Las Vegas, NV 89102
+                    {result.formattedAddress}
                   </Typography>
                   <Typography component="p" variant="subtitle2">
-                    <span style={{ fontWeight: "bold" }}>Operational:</span> Yes
+                    <span style={{ fontWeight: "bold" }}>
+                      {result.businessStatus}
+                    </span>
                   </Typography>
                 </Grid>
                 {/* Bottom Row */}

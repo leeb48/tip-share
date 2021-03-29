@@ -1,15 +1,9 @@
-import { Button, Grid } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
-import InputBase from "@material-ui/core/InputBase";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import {
-  createStyles,
-  fade,
-  makeStyles,
-  Theme,
-} from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -20,6 +14,7 @@ import { useAppDispatch } from "app/store";
 import { changeProfileTabIdx } from "components/profile/profileSlice";
 import React from "react";
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,55 +35,6 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: 0,
     },
 
-    search: {
-      position: "relative",
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        width: "auto",
-      },
-    },
-
-    searchMobile: {
-      position: "relative",
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginTop: theme.spacing(1),
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        width: "auto",
-      },
-    },
-
-    searchBtnMobile: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
-    },
-
-    inputRoot: {
-      color: "inherit",
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("md")]: {
-        width: "20ch",
-      },
-    },
     sectionDesktop: {
       display: "none",
       [theme.breakpoints.up("md")]: {
@@ -98,18 +44,6 @@ const useStyles = makeStyles((theme: Theme) =>
     sectionMobile: {
       display: "flex",
       [theme.breakpoints.up("md")]: {
-        display: "none",
-      },
-    },
-    searchBarDesktop: {
-      display: "none",
-      [theme.breakpoints.up("sm")]: {
-        display: "flex",
-      },
-    },
-    searchBarMobile: {
-      display: "flex",
-      [theme.breakpoints.up("sm")]: {
         display: "none",
       },
     },
@@ -244,57 +178,7 @@ const Navbar = () => {
 
           <div className={classes.grow} />
 
-          <div className={classes.searchBarDesktop}>
-            <div className={classes.search}>
-              <InputBase
-                placeholder="Restaurant Name"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ "aria-label": "search" }}
-              />
-            </div>
-            <div className={classes.search}>
-              <InputBase
-                placeholder="Address"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ "aria-label": "search" }}
-              />
-            </div>
-            <Button variant="contained">Search</Button>
-          </div>
-
-          <div className={classes.searchBarMobile}>
-            <Grid container justify="center">
-              <div className={classes.searchMobile}>
-                <InputBase
-                  placeholder="Restaurant Name"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </div>
-              <div className={classes.searchMobile}>
-                <InputBase
-                  placeholder="Address"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </div>
-              <Button className={classes.searchBtnMobile} variant="contained">
-                Search
-              </Button>
-            </Grid>
-          </div>
+          <SearchBar />
 
           <div className={classes.grow} />
 

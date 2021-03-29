@@ -1,6 +1,8 @@
 import { Grid } from "@material-ui/core";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { RootState } from "app/rootReducer";
 import React from "react";
+import { shallowEqual, useSelector } from "react-redux";
 import SearchResultItem from "./SearchResultItem";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -18,11 +20,20 @@ const useStyles = makeStyles((theme: Theme) =>
 const SearchResults = () => {
   const classes = useStyles();
 
+  const { searchResults } = useSelector((state: RootState) => {
+    return {
+      searchResults: state.search.searchResults,
+    };
+  }, shallowEqual);
+
   return (
     <Grid container justify="center" className={classes.root}>
       <Grid className={classes.resultItemRoot} container direction="column">
-        <SearchResultItem />
-        <SearchResultItem />
+        {searchResults &&
+          searchResults.length > 0 &&
+          searchResults.map((result) => (
+            <SearchResultItem key={result.placeId} result={result} />
+          ))}
       </Grid>
     </Grid>
   );
