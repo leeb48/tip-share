@@ -6,9 +6,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class PlacesSearchPageTokenDto {
+public class PlacesSearchNextPageTokenDto {
 
     @NotEmpty
     @NotNull
-    private String pageToken;
+    private String nextPageToken;
 }
