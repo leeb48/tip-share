@@ -68,6 +68,13 @@ export const registerUser = (
   }
 };
 
+/**
+ * Log in the user with the given credentials and redirects to landing page
+ * upon successful login
+ * @param data contains user login credentials
+ * @param history used to redirect the user after successful login
+ * @returns
+ */
 export const loginUser = (data: LoginUserDto, history: any): AppThunk => async (
   dispatch
 ) => {

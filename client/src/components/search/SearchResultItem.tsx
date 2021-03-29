@@ -3,6 +3,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import SaveIcon from "@material-ui/icons/BookmarkBorder";
 import { Result } from "components/interfaces/GooglePlacesInterface";
 import React, { Fragment } from "react";
+import ImageNotFound from "image/no-image.png";
 
 interface Props {
   result: Result;
@@ -49,8 +50,13 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
 
       marginTop: "15px",
       marginBottom: "10px",
-      backgroundImage: ({ result }) =>
-        `url(${result.photos[0].photoReference})`,
+      backgroundImage: ({ result }) => {
+        if (result.photos) {
+          return `url(${result.photos[0].photoReference})`;
+        } else {
+          return `url(${ImageNotFound})`;
+        }
+      },
       backgroundSize: "cover",
       borderRadius: "10px ",
     },
