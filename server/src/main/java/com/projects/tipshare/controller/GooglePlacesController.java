@@ -5,6 +5,7 @@ import com.google.maps.PlacesApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
+import com.projects.tipshare.controller.dto.PlacesSearchNextPageTokenDto;
 import com.projects.tipshare.controller.dto.PlacesSearchQueryDto;
 import com.projects.tipshare.exception.googleapiexcpetion.SearchFailedException;
 import com.projects.tipshare.service.GooglePlacesService;
@@ -61,5 +62,40 @@ public class GooglePlacesController {
         } catch (Exception e) {
             throw new SearchFailedException("Search failed");
         }
+    }
+
+    /**
+     * Load the next page of 20 more search result items from the same search term
+     *
+     * @param nextPageTokenDto token provided by google to load the next page
+     * @param result           catches any validation errors from request body
+     * @return returns the next page of results
+     */
+    @PostMapping
+    @RequestMapping("/search/next-page")
+    public ResponseEntity<?> getNextPage(@Valid @RequestBody PlacesSearchNextPageTokenDto nextPageTokenDto, BindingResult result) {
+
+        if (result.hasErrors()) {
+            return validationService.createObjectErrorResponse(result);
+        }
+
+        String nextPageToken = nextPageTokenDto.getNextPageToken();
+
+        try {
+
+            PlacesSearchResponse placesSearchResponse = PlacesApi.textSearchNextPage(context, nextPageToken).await();
+
+            // replace the photoReferences with actual image urls
+            for (PlacesSearchResult place : placesSearchResponse.results) {
+                place.photos[0].photoReference = googlePlacesService.getImageUrl(place.photos[0].photoReference);
+            }
+
+            return ResponseEntity.ok(placesSearchResponse);
+
+        } catch (Exception e) {
+
+            throw new SearchFailedException("Next Page Load Failed");
+        }
+
     }
 }
