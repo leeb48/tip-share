@@ -53,16 +53,16 @@ public class GooglePlacesController {
         try {
             PlacesSearchResponse placesSearchResponse = PlacesApi.textSearchQuery(context, placeName + " " + placeAddr).await();
 
-            // replace the photoReferences with actual image urls
-            for (PlacesSearchResult place : placesSearchResponse.results) {
-                place.photos[0].photoReference = googlePlacesService.getImageUrl(place.photos[0].photoReference);
-            }
 
-            return ResponseEntity.ok(placesSearchResponse);
+            PlacesSearchResponse searchResponseWithImageUrl = attachImagesToResponse(placesSearchResponse);
+
+            return ResponseEntity.ok(searchResponseWithImageUrl);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new SearchFailedException("Search failed");
         }
     }
+
 
     /**
      * Load the next page of 20 more search result items from the same search term
@@ -83,19 +83,36 @@ public class GooglePlacesController {
 
         try {
 
-            PlacesSearchResponse placesSearchResponse = PlacesApi.textSearchNextPage(context, nextPageToken).await();
+            PlacesSearchResponse nextPageResponse = PlacesApi.textSearchNextPage(context, nextPageToken).await();
 
-            // replace the photoReferences with actual image urls
-            for (PlacesSearchResult place : placesSearchResponse.results) {
-                place.photos[0].photoReference = googlePlacesService.getImageUrl(place.photos[0].photoReference);
-            }
+            PlacesSearchResponse nextPageResponseWithImageUrl = attachImagesToResponse(nextPageResponse);
 
-            return ResponseEntity.ok(placesSearchResponse);
+            return ResponseEntity.ok(nextPageResponseWithImageUrl);
 
         } catch (Exception e) {
+            e.printStackTrace();
 
             throw new SearchFailedException("Next Page Load Failed");
         }
 
+    }
+
+    /**
+     * Takes the search response from Google Places API and replaces the photo reference with
+     * the actual url of the place images
+     *
+     * @param searchResponse the PlacesSearchResponse received from making search query to PlacesAPI
+     * @return the PlacesSearchResponse with actual image urls
+     */
+    private PlacesSearchResponse attachImagesToResponse(PlacesSearchResponse searchResponse) {
+        // replace the photoReferences with actual image urls
+        for (PlacesSearchResult place : searchResponse.results) {
+            if (place != null && place.photos != null) {
+
+                place.photos[0].photoReference = googlePlacesService.getImageUrl(place.photos[0].photoReference);
+            }
+        }
+
+        return searchResponse;
     }
 }
