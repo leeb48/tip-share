@@ -40,7 +40,8 @@ public class UserService {
      */
     public void registerUser(RegisterUserDto registerUserDto) {
 
-        String username = registerUserDto.getUsername();
+        String username = registerUserDto.getUsername().toLowerCase();
+        String email = registerUserDto.getEmail();
 
         // check to see if user is already registered
         if (userRepo.existsByUsername(username)) {
@@ -51,6 +52,7 @@ public class UserService {
         String hashedPassword = passwordEncoder.encode(registerUserDto.getPassword());
 
         newUser.setUsername(username);
+        newUser.setEmail(email);
         newUser.setPassword(hashedPassword);
 
         Set<Authority> authorities = new HashSet<>();

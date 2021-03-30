@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,8 +18,12 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username", "email"})})
 public class User extends BaseEntity {
+
+    @NotNull(message = "Email is required")
+    @Email
+    private String email;
 
     @NotNull(message = "Username is required")
     private String username;
