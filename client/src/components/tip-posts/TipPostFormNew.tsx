@@ -43,11 +43,14 @@ const initialValues: fValues = {
   comment: "",
 };
 
-const TipPostForm = () => {
+const TipPostFormNew = () => {
   return (
     <RootGrid container justify="center">
       <GutterGrid item sm={1} />
       <MainContentGrid item xs={12} sm={10}>
+        <Typography variant="h5" gutterBottom>
+          New TipPost
+        </Typography>
         <Typography style={{ marginBottom: "35px" }} variant="h6">
           The amounts do not have to be exact but please give an approximation
           that can be informative to other people.
@@ -125,4 +128,4 @@ const TipPostForm = () => {
   );
 };
 
-export default TipPostForm;
+export default TipPostFormNew;
