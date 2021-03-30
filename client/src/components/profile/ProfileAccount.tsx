@@ -41,6 +41,7 @@ const ProfileAccountPage: React.FC<Props> = ({
   return (
     <RootGrid container justify="space-around">
       <LeftColumn xs={6} sm={5} item>
+        <StyledTypography variant="body1">Email:</StyledTypography>
         <StyledTypography variant="body1">Username:</StyledTypography>
         <StyledTypography variant="body1">Password:</StyledTypography>
       </LeftColumn>
@@ -48,6 +49,7 @@ const ProfileAccountPage: React.FC<Props> = ({
         <StyledTypography variant="body1">
           bongster228@gmail.com
         </StyledTypography>
+        <StyledTypography variant="body1">user1</StyledTypography>
         <StyledTypography variant="body1">**********</StyledTypography>
       </MiddleColumn>
       <RightColumn sm={2} item>

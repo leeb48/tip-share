@@ -35,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validationSchema = yup.object({
+  email: yup
+    .string()
+    .email("Must be a valid email")
+    .required("Email is required"),
   username: yup.string().required("Username is required").min(5).max(15),
   password: yup.string().required().min(5).max(15),
 });
@@ -63,6 +67,7 @@ const RegisterForm = () => {
         </Typography>
         <Formik
           initialValues={{
+            email: "",
             username: "",
             password: "",
           }}
@@ -80,6 +85,14 @@ const RegisterForm = () => {
           {(props) => (
             <Form className={classes.form}>
               <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextFieldWithError
+                    name="email"
+                    label="Email"
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
                 <Grid item xs={12}>
                   <TextFieldWithError
                     name="username"

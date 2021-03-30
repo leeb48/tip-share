@@ -59,9 +59,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Profile = () => {
   // Use this index value to navigate to certain tab from other pages
-  const { profileTabIdx } = useSelector((state: RootState) => {
+  const { profileTabIdx, username } = useSelector((state: RootState) => {
     return {
       profileTabIdx: state.profile.profileTabIdx,
+      username: state.auth.username,
     };
   }, shallowEqual);
 
@@ -79,7 +80,7 @@ const Profile = () => {
   return (
     <div className={classes.root}>
       <Typography className={classes.title} component="h4" variant="h4">
-        Hello, User
+        Hello, {username}
       </Typography>
       {/* Tab Component */}
       <Tabs
