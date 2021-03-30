@@ -82,7 +82,7 @@ public class AuthController {
 
             // perform authentication
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    loginUserDto.getUsername(),
+                    loginUserDto.getUsername().toLowerCase(),
                     loginUserDto.getPassword()
             );
 
