@@ -15,12 +15,15 @@ export type AuthState = {
   username: string;
   authorities: string[];
   isAuthenticated: boolean;
+
+  authLoading: boolean;
 };
 
 const initialState: AuthState = {
   username: "",
   authorities: [],
   isAuthenticated: false,
+  authLoading: false,
 };
 
 // Case Reducers
@@ -41,13 +44,28 @@ export const logoutReducer: CaseReducer<AuthState> = (state) => {
   state.isAuthenticated = false;
 };
 
+export const setAuthLoadingReducer: CaseReducer<
+  AuthState,
+  PayloadAction<boolean>
+> = (state, { payload }) => {
+  state.authLoading = payload;
+};
+
 const AuthSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: { loginUserAction: loginUserReducer, logoutAction: logoutReducer },
+  reducers: {
+    loginUserAction: loginUserReducer,
+    logoutAction: logoutReducer,
+    setAuthLoadingAction: setAuthLoadingReducer,
+  },
 });
 
-export const { loginUserAction, logoutAction } = AuthSlice.actions;
+export const {
+  loginUserAction,
+  logoutAction,
+  setAuthLoadingAction,
+} = AuthSlice.actions;
 
 export default AuthSlice.reducer;
 
@@ -117,6 +135,8 @@ export const loginUser = (data: LoginUserDto, history: any): AppThunk => async (
 };
 
 export const authenticateUserFromJWT = (): AppThunk => async (dispatch) => {
+  dispatch(setAuthLoadingAction(true));
+
   const jwt = sessionStorage.getItem("jwt") || localStorage.getItem("jwt");
   if (jwt) {
     const jwt_decoded: JWTDecoded = jwt_decode(jwt);
@@ -129,4 +149,6 @@ export const authenticateUserFromJWT = (): AppThunk => async (dispatch) => {
       })
     );
   }
+
+  dispatch(setAuthLoadingAction(false));
 };
