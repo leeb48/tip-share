@@ -33,13 +33,21 @@ export const loginUserReducer: CaseReducer<
   state.isAuthenticated = payload.isAuthenticated;
 };
 
+export const logoutReducer: CaseReducer<AuthState> = (state) => {
+  localStorage.removeItem("jwt");
+  sessionStorage.removeItem("jwt");
+  state.username = "";
+  state.authorities = [];
+  state.isAuthenticated = false;
+};
+
 const AuthSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: { loginUserAction: loginUserReducer },
+  reducers: { loginUserAction: loginUserReducer, logoutAction: logoutReducer },
 });
 
-export const { loginUserAction } = AuthSlice.actions;
+export const { loginUserAction, logoutAction } = AuthSlice.actions;
 
 export default AuthSlice.reducer;
 
@@ -105,5 +113,20 @@ export const loginUser = (data: LoginUserDto, history: any): AppThunk => async (
   } catch (error) {
     const errorMessage = getErrorMessage(error);
     dispatch(setAlert({ alertType: "error", message: errorMessage }));
+  }
+};
+
+export const authenticateUserFromJWT = (): AppThunk => async (dispatch) => {
+  const jwt = sessionStorage.getItem("jwt") || localStorage.getItem("jwt");
+  if (jwt) {
+    const jwt_decoded: JWTDecoded = jwt_decode(jwt);
+
+    dispatch(
+      loginUserAction({
+        username: jwt_decoded.username,
+        authorities: jwt_decoded.authorities.split(","),
+        isAuthenticated: true,
+      })
+    );
   }
 };

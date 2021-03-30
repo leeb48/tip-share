@@ -10,11 +10,15 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import LoginIcon from "@material-ui/icons/LockOpen";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import RegisterIcon from "@material-ui/icons/PersonAdd";
+import { RootState } from "app/rootReducer";
 import { useAppDispatch } from "app/store";
 import { changeProfileTabIdx } from "components/profile/profileSlice";
-import React from "react";
+import React, { Fragment } from "react";
+import { shallowEqual, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import LogoutIcon from "@material-ui/icons/ExitToApp";
+import { logoutAction } from "components/auth/authSlice";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,10 +54,20 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+//TODO: refactor to make it cleaner
+
 const Navbar = () => {
   const dispatch = useAppDispatch();
 
   const classes = useStyles();
+
+  const { isAuthenticated } = useSelector((state: RootState) => {
+    return {
+      isAuthenticated: state.auth.isAuthenticated,
+    };
+  }, shallowEqual);
+
+  // Menu open and close logic
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [
     mobileMoreAnchorEl,
@@ -65,6 +79,10 @@ const Navbar = () => {
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
@@ -81,12 +99,13 @@ const Navbar = () => {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
+  const handleLogout = () => {
+    handleMenuClose(0);
+    dispatch(logoutAction());
   };
 
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
+  const renderAuthenticatedMenu = isAuthenticated && (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -120,7 +139,7 @@ const Navbar = () => {
       >
         Saved Places
       </MenuItem>
-      <MenuItem onClick={() => handleMenuClose()}>Logout</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -135,30 +154,67 @@ const Navbar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem component={Link} to={"/register"}>
-        <IconButton color="inherit">
-          <RegisterIcon />
-        </IconButton>
-        <p>Register</p>
-      </MenuItem>
-      <MenuItem component={Link} to={"/login"}>
-        <IconButton color="inherit">
-          <LoginIcon />
-        </IconButton>
-        <p>Login</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      {isAuthenticated ? (
+        <div>
+          <MenuItem onClick={handleLogout}>
+            <IconButton color="inherit">
+              <LogoutIcon />
+            </IconButton>
+            <p>Logout</p>
+          </MenuItem>
+          <MenuItem onClick={handleProfileMenuOpen}>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <p>Profile</p>
+          </MenuItem>
+        </div>
+      ) : (
+        <div>
+          <MenuItem component={Link} to={"/register"}>
+            <IconButton color="inherit">
+              <RegisterIcon />
+            </IconButton>
+            <p>Register</p>
+          </MenuItem>
+          <MenuItem component={Link} to={"/login"}>
+            <IconButton color="inherit">
+              <LoginIcon />
+            </IconButton>
+            <p>Login</p>
+          </MenuItem>
+        </div>
+      )}
     </Menu>
+  );
+
+  const renderDesktopMenu = isAuthenticated ? (
+    <Fragment>
+      <IconButton
+        edge="end"
+        aria-label="account of current user"
+        aria-controls={menuId}
+        aria-haspopup="true"
+        onClick={handleProfileMenuOpen}
+        color="inherit"
+      >
+        <AccountCircle />
+      </IconButton>
+    </Fragment>
+  ) : (
+    <Fragment>
+      <Button component={Link} to="/register" color="inherit">
+        Register
+      </Button>
+      <Button component={Link} to="/login" color="inherit">
+        Login
+      </Button>
+    </Fragment>
   );
 
   return (
@@ -182,24 +238,7 @@ const Navbar = () => {
 
           <div className={classes.grow} />
 
-          <div className={classes.sectionDesktop}>
-            <Button component={Link} to="/register" color="inherit">
-              Register
-            </Button>
-            <Button component={Link} to="/login" color="inherit">
-              Login
-            </Button>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
+          <div className={classes.sectionDesktop}>{renderDesktopMenu}</div>
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -214,7 +253,7 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
+      {renderAuthenticatedMenu}
     </div>
   );
 };
