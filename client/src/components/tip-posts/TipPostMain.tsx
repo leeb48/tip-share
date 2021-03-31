@@ -6,9 +6,12 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import { RootState } from "app/rootReducer";
+import { useEffect } from "react";
+import { shallowEqual, useSelector } from "react-redux";
 import TipPostHeader from "./TipPostHeader";
 import TipPostUserShareItem from "./TipPostUserShareItem";
+import LoadingSpinner from "components/layout/LoadingSpinner";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,50 +32,68 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const TipPostMain = () => {
   const classes = useStyles();
+  const { tipPostStateLoading, selectedPlace } = useSelector(
+    (state: RootState) => {
+      return {
+        tipPostStateLoading: state.tipPost.tipPostStateLoading,
+        selectedPlace: state.tipPost.selectedPlace,
+      };
+    },
+    shallowEqual
+  );
 
-  return (
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return tipPostStateLoading ? (
+    <LoadingSpinner />
+  ) : (
     <Grid justify="center" className={classes.rootGrid} container>
       <Grid item sm={1} />
-      <Grid
-        className={classes.tipPostRoot}
-        item
-        sm={10}
-        xs={12}
-        container
-        direction="column"
-      >
-        <Grid container direction="column" spacing={3}>
-          {/* Header Component */}
-          <Grid item>
-            <TipPostHeader />
-          </Grid>
 
-          <Grid item>
-            <Typography variant="h5" component="h4">
-              <Paper
-                className={classes.userShareTitle}
-                component="span"
-                variant="outlined"
-              >
-                User Shares
-              </Paper>
-            </Typography>
-          </Grid>
+      {selectedPlace && (
+        <Grid
+          className={classes.tipPostRoot}
+          item
+          sm={10}
+          xs={12}
+          container
+          direction="column"
+        >
+          <Grid container direction="column" spacing={3}>
+            {/* Header Component */}
+            <Grid item>
+              <TipPostHeader selectedPlace={selectedPlace} />
+            </Grid>
 
-          {/* Bottom Component (User post component) */}
-          <Grid item container spacing={3}>
             <Grid item>
-              <TipPostUserShareItem />
+              <Typography variant="h5" component="h4">
+                <Paper
+                  className={classes.userShareTitle}
+                  component="span"
+                  variant="outlined"
+                >
+                  User Shares
+                </Paper>
+              </Typography>
             </Grid>
-            <Grid item>
-              <TipPostUserShareItem />
-            </Grid>
-            <Grid item>
-              <TipPostUserShareItem />
+
+            {/* Bottom Component (User post component) */}
+            <Grid item container spacing={3}>
+              <Grid item>
+                <TipPostUserShareItem />
+              </Grid>
+              <Grid item>
+                <TipPostUserShareItem />
+              </Grid>
+              <Grid item>
+                <TipPostUserShareItem />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
       <Grid item sm={1} />
     </Grid>
   );

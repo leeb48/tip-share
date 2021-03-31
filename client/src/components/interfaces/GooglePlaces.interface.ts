@@ -1,4 +1,4 @@
-export interface GooglePlacesResponse {
+export interface PlacesAPIResponse {
   results: Result[];
   htmlAttributions: any[];
   nextPageToken: string;
@@ -13,7 +13,7 @@ export interface Result {
   scope: any;
   rating: number;
   types: string[];
-  openingHours: OpeningHours;
+  openingHours?: OpeningHours;
   photos: Photo[];
   vicinity: any;
   permanentlyClosed: boolean;

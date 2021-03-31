@@ -22,6 +22,7 @@ const initialState: AlertsState = {
   inputErrors: {},
 };
 
+// ------------------------------------------------------------------------------
 // Case Reducers
 const setInputErrorsReducer: CaseReducer<
   AlertsState,
@@ -67,6 +68,7 @@ export const {
   removeAlertAction,
 } = alertsSlice.actions;
 
+// ------------------------------------------------------------------------------
 // Thunk
 export const setAlert = (alert: Alert): AppThunk => async (dispatch) => {
   const uuid = uuidv4();

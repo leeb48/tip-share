@@ -3,9 +3,9 @@ import { AppThunk } from "app/store";
 import { setAlert } from "components/alert/alertSlice";
 import { getErrorMessage } from "components/componentUtils/getErrorMessage";
 import {
-  GooglePlacesResponse,
+  PlacesAPIResponse,
   Result,
-} from "components/interfaces/GooglePlacesInterface";
+} from "components/interfaces/GooglePlaces.interface";
 import { springAxios } from "config/springAxios";
 import { NextPageTokenDto, SearchQueryDto } from "./search.dto";
 
@@ -29,9 +29,11 @@ const initialState: SearchState = {
   searchResults: [],
 };
 
+// ------------------------------------------------------------------------------
+// Case Reducers
 const updateSearchResultsReducer: CaseReducer<
   SearchState,
-  PayloadAction<GooglePlacesResponse>
+  PayloadAction<PlacesAPIResponse>
 > = (state, { payload }) => {
   state.nextPageToken = payload.nextPageToken;
   state.searchResults = payload.results;
@@ -39,7 +41,7 @@ const updateSearchResultsReducer: CaseReducer<
 
 const loadNextPageReducer: CaseReducer<
   SearchState,
-  PayloadAction<GooglePlacesResponse>
+  PayloadAction<PlacesAPIResponse>
 > = (state, { payload }) => {
   state.nextPageToken = payload.nextPageToken;
   state.searchResults = [...state.searchResults!, ...payload.results];
@@ -102,7 +104,7 @@ export const makeSearch = (data: SearchQueryDto): AppThunk => async (
     dispatch(clearSearchResultsAction());
     dispatch(setSearchLoadingAction(true));
 
-    const res = await springAxios.post<GooglePlacesResponse>(
+    const res = await springAxios.post<PlacesAPIResponse>(
       "/places/search",
       data
     );
@@ -127,7 +129,7 @@ export const loadNextPage = (data: NextPageTokenDto): AppThunk => async (
 ) => {
   try {
     dispatch(setLoadNextPageAction(true));
-    const res = await springAxios.post<GooglePlacesResponse>(
+    const res = await springAxios.post<PlacesAPIResponse>(
       "/places/search/next-page",
       data
     );

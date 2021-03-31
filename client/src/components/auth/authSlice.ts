@@ -26,6 +26,7 @@ const initialState: AuthState = {
   authLoading: false,
 };
 
+// ------------------------------------------------------------------------------
 // Case Reducers
 export const loginUserReducer: CaseReducer<
   AuthState,

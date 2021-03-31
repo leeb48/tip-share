@@ -1,9 +1,12 @@
 import { Grid, IconButton, Paper, Typography } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import SaveIcon from "@material-ui/icons/BookmarkBorder";
-import { Result } from "components/interfaces/GooglePlacesInterface";
-import React, { Fragment } from "react";
+import { useAppDispatch } from "app/store";
+import { Result } from "components/interfaces/GooglePlaces.interface";
+import { loadSelectedPlaceDetail } from "components/tip-posts/TipPostSlice";
 import ImageNotFound from "image/no-image.png";
+import React, { Fragment } from "react";
+import { useHistory } from "react-router-dom";
 
 interface Props {
   result: Result;
@@ -76,9 +79,92 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
 const SearchResultItem: React.FC<Props> = ({ result }) => {
   const classes = useStyles({ result });
 
+  const history = useHistory();
+
+  const dispatch = useAppDispatch();
+
   const bookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
+
+  // load place details data and
+  // redirect to place details page
+  const handleResultItemClick = () => {
+    dispatch(loadSelectedPlaceDetail(result, history));
+  };
+
+  const displayPhotoAndTipCount = (
+    <Grid
+      container
+      className={`${classes.gridHeight} ${classes.photoRoot}`}
+      alignItems="center"
+      direction="column"
+      wrap="nowrap"
+    >
+      {/* Photo */}
+      <Grid item>
+        <Paper className={classes.photo} />
+      </Grid>
+      {/* Tip share count */}
+      <Grid item>
+        <Typography component="p" variant="subtitle2">
+          15 Tip Reports
+        </Typography>
+      </Grid>
+    </Grid>
+  );
+
+  const displayPlaceInfo = (
+    <Grid item>
+      <Typography component="p" variant="h6">
+        {result.name}
+      </Typography>
+      <Typography component="p" variant="body1">
+        {result.formattedAddress}
+      </Typography>
+      <Typography component="p" variant="subtitle2">
+        <span style={{ fontWeight: "bold" }}>{result.businessStatus}</span>
+      </Typography>
+    </Grid>
+  );
+
+  const displayTipInfo = (
+    <Grid justify="space-evenly" container>
+      <Grid
+        xs={4}
+        item
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Typography variant="subtitle1">Lowest</Typography>
+        <Paper className={classes.tipInfoPaper}>$18/hr</Paper>
+      </Grid>
+      <Grid
+        xs={4}
+        item
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Typography variant="subtitle1">Typical</Typography>
+        <Paper className={classes.tipInfoPaper}>$24/hr</Paper>
+      </Grid>
+      <Grid
+        xs={4}
+        item
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Typography variant="subtitle1">Highest</Typography>
+        <Paper className={classes.tipInfoPaper}>$35/hr</Paper>
+      </Grid>
+    </Grid>
+  );
 
   return (
     <Fragment>
@@ -87,28 +173,12 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
         <Paper
           className={`${classes.fullWidth} ${classes.resultPaper}`}
           variant="outlined"
+          onClick={handleResultItemClick}
         >
           <Grid wrap="nowrap" justify="space-between" container>
             {/* Left Column Start */}
             <Grid sm={4} md={3} item>
-              <Grid
-                container
-                className={`${classes.gridHeight} ${classes.photoRoot}`}
-                alignItems="center"
-                direction="column"
-                wrap="nowrap"
-              >
-                {/* Photo */}
-                <Grid item>
-                  <Paper className={classes.photo} />
-                </Grid>
-                {/* Tip share count */}
-                <Grid item>
-                  <Typography component="p" variant="subtitle2">
-                    15 Tip Reports
-                  </Typography>
-                </Grid>
-              </Grid>
+              {displayPhotoAndTipCount}
             </Grid>
             {/* Left Column End */}
             {/* Middle Column Start */}
@@ -120,58 +190,11 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
                 justify="space-evenly"
               >
                 {/* Top Row */}
-                <Grid item>
-                  <Typography component="p" variant="h6">
-                    {result.name}
-                  </Typography>
-                  <Typography component="p" variant="body1">
-                    {result.formattedAddress}
-                  </Typography>
-                  <Typography component="p" variant="subtitle2">
-                    <span style={{ fontWeight: "bold" }}>
-                      {result.businessStatus}
-                    </span>
-                  </Typography>
-                </Grid>
+                {displayPlaceInfo}
+
                 {/* Top Row End */}
                 {/* Bottom Row Start */}
-                <Grid item>
-                  <Grid justify="space-evenly" container>
-                    <Grid
-                      xs={4}
-                      item
-                      container
-                      direction="column"
-                      justify="center"
-                      alignItems="center"
-                    >
-                      <Typography variant="subtitle1">Lowest</Typography>
-                      <Paper className={classes.tipInfoPaper}>$18/hr</Paper>
-                    </Grid>
-                    <Grid
-                      xs={4}
-                      item
-                      container
-                      direction="column"
-                      justify="center"
-                      alignItems="center"
-                    >
-                      <Typography variant="subtitle1">Typical</Typography>
-                      <Paper className={classes.tipInfoPaper}>$24/hr</Paper>
-                    </Grid>
-                    <Grid
-                      xs={4}
-                      item
-                      container
-                      direction="column"
-                      justify="center"
-                      alignItems="center"
-                    >
-                      <Typography variant="subtitle1">Highest</Typography>
-                      <Paper className={classes.tipInfoPaper}>$35/hr</Paper>
-                    </Grid>
-                  </Grid>
-                </Grid>
+                <Grid item>{displayTipInfo}</Grid>
                 {/* Bottom Row End */}
               </Grid>
             </Grid>
