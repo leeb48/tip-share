@@ -85,6 +85,62 @@ const ProfileSavedPlacesItem = () => {
 
   const muiTheme = useTheme();
 
+  const displayPhotoAndTipCount = (
+    <Grid container alignItems="center" direction="column" wrap="nowrap">
+      {/* Photo */}
+      <Grid item>
+        <Photo />
+      </Grid>
+      {/* Tip share count */}
+      <Grid item>
+        <Typography component="p" variant="subtitle2">
+          15 Tip Reports
+        </Typography>
+      </Grid>
+    </Grid>
+  );
+  const displayPlaceInfo = (
+    <TopRow item>
+      <Typography component="p" variant="h6">
+        Wolf + Sparrow
+      </Typography>
+      <Typography component="p" variant="body1">
+        4480 Spring Mountain Rd #100, Las Vegas, NV 89102
+      </Typography>
+      <Typography component="p" variant="subtitle2">
+        <span style={{ fontWeight: "bold" }}>Operational:</span> Yes
+      </Typography>
+    </TopRow>
+  );
+  const displayRatingAndType = (
+    <Grid justify="space-evenly" container>
+      <Grid
+        xs={4}
+        item
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Typography variant="subtitle1">Google Rating</Typography>
+
+        <TipInfoPaper>4.6</TipInfoPaper>
+      </Grid>
+      <Grid
+        xs={4}
+        item
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Typography variant="subtitle1">Type</Typography>
+
+        <TipInfoPaper>BAR</TipInfoPaper>
+      </Grid>
+    </Grid>
+  );
+
   return (
     <Fragment>
       <StylesProvider injectFirst>
@@ -98,23 +154,7 @@ const ProfileSavedPlacesItem = () => {
               <Grid wrap="nowrap" justify="space-between" container>
                 {/* Left Column */}
                 <LeftColumn sm={4} md={3} item>
-                  <Grid
-                    container
-                    alignItems="center"
-                    direction="column"
-                    wrap="nowrap"
-                  >
-                    {/* Photo */}
-                    <Grid item>
-                      <Photo />
-                    </Grid>
-                    {/* Tip share count */}
-                    <Grid item>
-                      <Typography component="p" variant="subtitle2">
-                        15 Tip Reports
-                      </Typography>
-                    </Grid>
-                  </Grid>
+                  {displayPhotoAndTipCount}
                 </LeftColumn>
                 {/* Middle Column */}
                 <Grid sm={7} md={8} item>
@@ -124,59 +164,10 @@ const ProfileSavedPlacesItem = () => {
                     justify="space-evenly"
                   >
                     {/* Top Row */}
-                    <TopRow item>
-                      <Typography component="p" variant="h6">
-                        Wolf + Sparrow
-                      </Typography>
-                      <Typography component="p" variant="body1">
-                        4480 Spring Mountain Rd #100, Las Vegas, NV 89102
-                      </Typography>
-                      <Typography component="p" variant="subtitle2">
-                        <span style={{ fontWeight: "bold" }}>Operational:</span>{" "}
-                        Yes
-                      </Typography>
-                    </TopRow>
+                    {displayPlaceInfo}
+
                     {/* Bottom Row */}
-                    <BottomRow item>
-                      <Grid justify="space-evenly" container>
-                        <Grid
-                          xs={4}
-                          item
-                          container
-                          direction="column"
-                          justify="center"
-                          alignItems="center"
-                        >
-                          <Typography variant="subtitle1">Lowest</Typography>
-
-                          <TipInfoPaper>$18/hr</TipInfoPaper>
-                        </Grid>
-                        <Grid
-                          xs={4}
-                          item
-                          container
-                          direction="column"
-                          justify="center"
-                          alignItems="center"
-                        >
-                          <Typography variant="subtitle1">Lowest</Typography>
-
-                          <TipInfoPaper>$18/hr</TipInfoPaper>
-                        </Grid>
-                        <Grid
-                          xs={4}
-                          item
-                          container
-                          direction="column"
-                          justify="center"
-                          alignItems="center"
-                        >
-                          <Typography variant="subtitle1">Lowest</Typography>
-
-                          <TipInfoPaper>$18/hr</TipInfoPaper>
-                        </Grid>
-                      </Grid>
-                    </BottomRow>
+                    <BottomRow item>{displayRatingAndType}</BottomRow>
                   </MiddleColumn>
                 </Grid>
                 <Grid xs={1} item>

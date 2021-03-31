@@ -10,6 +10,8 @@ const initialState: ProfileState = {
   profileTabIdx: 0,
 };
 
+// ------------------------------------------------------------------------------
+// Case Reducers
 export const changeProfileTabIdxReducer: CaseReducer<
   ProfileState,
   PayloadAction<number>
@@ -26,3 +28,6 @@ const ProfileSlice = createSlice({
 export const { changeProfileTabIdx } = ProfileSlice.actions;
 
 export default ProfileSlice.reducer;
+
+// ------------------------------------------------------------------------------
+// Thunks

@@ -7,6 +7,7 @@ import { shallowEqual, useSelector } from "react-redux";
 import styled from "styled-components";
 import SearchResultItem from "./SearchResultItem";
 import { loadNextPage } from "./searchSlice";
+import LoadingSpinner from "components/layout/LoadingSpinner";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,10 +24,6 @@ const useStyles = makeStyles((theme: Theme) =>
 const LoadMoreButton = styled(Button)`
   margin-bottom: 2rem;
   padding: 1.5rem;
-`;
-
-const LoadingSpinner = styled(CircularProgress)`
-  margin-top: 30%;
 `;
 
 const NoResultsMessage = styled(Typography)`

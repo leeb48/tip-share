@@ -7,9 +7,11 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
+import { Place } from "components/interfaces/Places.interface";
 import React from "react";
+import ImageNotFound from "image/no-image.png";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
   createStyles({
     headerRootGrid: {
       [theme.breakpoints.down("xs")]: {
@@ -41,7 +43,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
       marginTop: "15px",
       marginBottom: "10px",
-      backgroundImage: `url(https://lh3.googleusercontent.com/p/AF1QipOD7S2BF3pTieo2TrZ0-N41sKDp88hXU0eRb7Ty=s1600-w400)`,
+      backgroundImage: ({ selectedPlace }) => {
+        if (selectedPlace.imageUrl) {
+          return `url(${selectedPlace.imageUrl})`;
+        } else {
+          return `url(${ImageNotFound})`;
+        }
+      },
       backgroundSize: "cover",
       borderRadius: "10px ",
     },
@@ -53,8 +61,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const TipPostHeader = () => {
-  const classes = useStyles();
+interface Props {
+  selectedPlace: Place;
+}
+
+const TipPostHeader: React.FC<Props> = ({ selectedPlace }) => {
+  const classes = useStyles({ selectedPlace });
 
   return (
     <Paper variant="outlined">
@@ -111,13 +123,15 @@ const TipPostHeader = () => {
         >
           <Grid className={classes.mobileRowMargin} item>
             <Typography component="p" variant="h6">
-              Wolf + Sparrow
+              {selectedPlace.placeName}
             </Typography>
             <Typography component="p" variant="body1">
-              4480 Spring Mountain Rd #100, Las Vegas, NV 89102
+              {selectedPlace.placeAddr}
             </Typography>
             <Typography component="p" variant="subtitle2">
-              <span style={{ fontWeight: "bold" }}>Operational:</span> Yes
+              <span style={{ fontWeight: "bold" }}>
+                {selectedPlace.operational}
+              </span>
             </Typography>
           </Grid>
           <Grid justify="space-evenly" item container wrap="nowrap">
@@ -129,8 +143,12 @@ const TipPostHeader = () => {
               justify="center"
               alignItems="center"
             >
-              <Typography variant="subtitle1">Lowest</Typography>
-              <Paper className={classes.tipInfoPaper}>$18/hr</Paper>
+              <Typography variant="subtitle1" gutterBottom>
+                Lowest
+              </Typography>
+              <Paper className={classes.tipInfoPaper}>
+                ${selectedPlace.lowestAvg}/hr
+              </Paper>
             </Grid>
             <Grid
               xs={4}
@@ -140,8 +158,12 @@ const TipPostHeader = () => {
               justify="center"
               alignItems="center"
             >
-              <Typography variant="subtitle1">Typical</Typography>
-              <Paper className={classes.tipInfoPaper}>$24/hr</Paper>
+              <Typography variant="subtitle1" gutterBottom>
+                Typical
+              </Typography>
+              <Paper className={classes.tipInfoPaper}>
+                ${selectedPlace.typicalAvg}/hr
+              </Paper>
             </Grid>
             <Grid
               xs={4}
@@ -151,8 +173,12 @@ const TipPostHeader = () => {
               justify="center"
               alignItems="center"
             >
-              <Typography variant="subtitle1">Highest</Typography>
-              <Paper className={classes.tipInfoPaper}>$35/hr</Paper>
+              <Typography variant="subtitle1" gutterBottom>
+                Highest
+              </Typography>
+              <Paper className={classes.tipInfoPaper}>
+                ${selectedPlace.highestAvg}/hr
+              </Paper>
             </Grid>
           </Grid>
         </Grid>
