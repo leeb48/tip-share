@@ -52,6 +52,14 @@ export default TipPostSlice.reducer;
 //-------------------------------------------------------------------------------
 // Thunks
 
+/**
+ * Sends the search result json object from PlacesAPI to the backend to retrieve
+ * the place object that is saved in the database. This action saves the place
+ * into the databse if it does not already exist.
+ * @param placeSearchResult the search result item from PlacesAPI
+ * @param history used to redirect the user after successful place data fetch
+ * @returns
+ */
 export const loadSelectedPlaceDetail = (
   placeSearchResult: Result,
   history: RouteComponentProps["history"]
@@ -72,5 +80,27 @@ export const loadSelectedPlaceDetail = (
   } catch (error) {
     const errorMessage = getErrorMessage(error);
     dispatch(setAlert({ alertType: "error", message: errorMessage }));
+  }
+};
+
+/**
+ * Retrieves the place that is stored in the database by using placeId.
+ * This thunk is used to retrieve data at the PlaceDetail component level.
+ * @param placeId the id given by PlacesAPI used to query the database
+ * @returns
+ */
+export const loadSelectedPlaceByPlaceId = (placeId: string): AppThunk => async (
+  dispatch
+) => {
+  try {
+    dispatch(setTipPostStateLoadingAction(true));
+    const res = await springAxios.get<Place>(`places/details/${placeId}`);
+
+    dispatch(loadSelectedPlaceAction(res.data));
+    dispatch(setTipPostStateLoadingAction(false));
+  } catch (error) {
+    const errorMessage = getErrorMessage(error);
+    dispatch(setAlert({ alertType: "error", message: errorMessage }));
+    dispatch(setTipPostStateLoadingAction(false));
   }
 };

@@ -12,6 +12,9 @@ import { shallowEqual, useSelector } from "react-redux";
 import TipPostHeader from "./TipPostHeader";
 import TipPostUserShareItem from "./TipPostUserShareItem";
 import LoadingSpinner from "components/layout/LoadingSpinner";
+import { RouteComponentProps, RouteProps } from "react-router";
+import { useAppDispatch } from "app/store";
+import { loadSelectedPlaceByPlaceId } from "./TipPostSlice";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,8 +33,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const TipPostMain = () => {
+interface MatchParams {
+  placeId: string;
+}
+interface Props extends RouteComponentProps<MatchParams> {
+  placeId: string;
+}
+
+const TipPostMain: React.FC<Props> = ({ match: { params } }) => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
   const { tipPostStateLoading, selectedPlace } = useSelector(
     (state: RootState) => {
       return {
@@ -44,7 +55,14 @@ const TipPostMain = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+
+    // fetch data only when user refreshes the page or
+    // navigates to component directly through url.
+    const placeId = params.placeId;
+    if (!tipPostStateLoading && placeId) {
+      dispatch(loadSelectedPlaceByPlaceId(placeId));
+    }
+  }, [dispatch, params.placeId]);
 
   return tipPostStateLoading ? (
     <LoadingSpinner />
