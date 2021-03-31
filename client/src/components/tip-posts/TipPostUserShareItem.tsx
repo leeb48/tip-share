@@ -11,6 +11,8 @@ import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import { useTheme, withTheme } from "@material-ui/styles";
 import styled from "styled-components";
+import RemoveIcon from "@material-ui/icons/Backspace";
+import EditIcon from "@material-ui/icons/Edit";
 
 const TipInfoPaper = styled(Paper)`
   padding: 8px 15px;
@@ -48,6 +50,29 @@ const FlagBtn = styled(ButtonBase)`
   padding: 3px 5px 3px 5px;
 `;
 
+const EditBtn = styled(ButtonBase)`
+  border-radius: 5px;
+  padding: 4px 7px 4px 7px;
+`;
+
+const RemoveBtn = styled(ButtonBase)`
+  border-radius: 5px;
+  padding: 4px 7px 4px 7px;
+`;
+
+const StyledEditIcon = styled(EditIcon)`
+  margin-right: 5px;
+  color: teal;
+  width: 13;
+  height: 13;
+`;
+const StyledRemoveIcon = styled(RemoveIcon)`
+  margin-right: 5px;
+  color: grey;
+  width: 13;
+  height: 13;
+`;
+
 const StyledThumbUpIcon = styled(ThumbUpIcon)`
   margin-right: 5px;
   color: green;
@@ -65,6 +90,10 @@ const StyledFlagIcon = styled(FlagIcon)`
   width: 13;
   height: 13;
 `;
+
+const EditRemoveBtnGrid = styled(Grid)``;
+const PostContentGrid = styled(Grid)``;
+const FeedbackBtnGrid = styled(Grid)``;
 
 const TipInfoGrid = withTheme(
   styled(Grid)`
@@ -126,7 +155,15 @@ const TipPostUserShareItem = () => {
               </TipInfoGrid>
             </UserSharePost>
             <Grid item sm={12} md={9} container direction="column" spacing={2}>
-              <Grid item>
+              <EditRemoveBtnGrid item container justify="flex-end">
+                <EditBtn>
+                  <StyledEditIcon />
+                </EditBtn>
+                <RemoveBtn>
+                  <StyledRemoveIcon />
+                </RemoveBtn>
+              </EditRemoveBtnGrid>
+              <PostContentGrid item>
                 <Typography component="p" variant="body2">
                   (Max 365 Characters) Lorem ipsum dolor sit amet consectetur
                   adipisicing elit. Rerum, earum voluptas magnam incidunt id
@@ -136,8 +173,13 @@ const TipPostUserShareItem = () => {
                   quos quia nulla cupiditate! Vitae beatae unde sapiente
                   similique perspiciatis.
                 </Typography>
-              </Grid>
-              <Grid item container direction="column" alignItems="flex-end">
+              </PostContentGrid>
+              <FeedbackBtnGrid
+                item
+                container
+                direction="column"
+                alignItems="flex-end"
+              >
                 <FeedbackBtnGroup item container justify="space-evenly">
                   <FeedbackBtn>
                     <StyledThumbUpIcon />
@@ -160,7 +202,7 @@ const TipPostUserShareItem = () => {
                     </Typography>
                   </FlagBtn>
                 </Grid>
-              </Grid>
+              </FeedbackBtnGrid>
             </Grid>
           </RootGrid>
         </ThemeProvider>
