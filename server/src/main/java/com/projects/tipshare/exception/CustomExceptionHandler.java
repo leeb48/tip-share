@@ -4,6 +4,8 @@ import com.projects.tipshare.exception.authexception.DuplicateUsernameException;
 import com.projects.tipshare.exception.authexception.DuplicateUsernameResponse;
 import com.projects.tipshare.exception.googleapiexcpetion.SearchFailedException;
 import com.projects.tipshare.exception.googleapiexcpetion.SearchFailedResponse;
+import com.projects.tipshare.exception.serviceException.LoadPlaceDetailFailException;
+import com.projects.tipshare.exception.serviceException.LoadPlaceDetailFailResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,4 +33,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleSavePlaceFailedException(LoadPlaceDetailFailException ex, WebRequest req) {
+        LoadPlaceDetailFailResponse res = new LoadPlaceDetailFailResponse(ex.getMessage());
+
+        return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+    }
 }
