@@ -21,7 +21,7 @@ const ResultItem = withTheme(
 
     cursor: pointer;
     padding: 0;
-    margin-bottom: 10px;
+    margin-bottom: 1.5rem;
   `
 );
 
