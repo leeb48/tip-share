@@ -6,10 +6,7 @@ import com.projects.tipshare.model.Place;
 import com.projects.tipshare.service.PlaceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/places")
@@ -42,12 +39,20 @@ public class PlaceController {
                 return new ResponseEntity<>(savedPlace, HttpStatus.OK);
             }
         } catch (Exception e) {
-
             throw new LoadPlaceDetailFailException(placesSearchResult.name + " failed to load.");
-
         }
+    }
 
+    @GetMapping("/details/{placeId}")
+    public ResponseEntity<?> retrievePlaceDetailByPlaceId(@PathVariable(value = "placeId") String placeId) {
 
+        Place foundPlace = placeService.getPlacebyPlaceId(placeId);
+
+        if (foundPlace == null) {
+            throw new LoadPlaceDetailFailException("Place with place ID " + placeId + " does not exist.");
+        } else {
+            return new ResponseEntity<>(foundPlace, HttpStatus.OK);
+        }
     }
 
 }

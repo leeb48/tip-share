@@ -9,11 +9,9 @@ import org.springframework.stereotype.Service;
 public class PlaceService {
 
     private final PlaceRepo placeRepo;
-    private final GooglePlacesService googlePlacesService;
 
-    public PlaceService(PlaceRepo placeRepo, GooglePlacesService googlePlacesService) {
+    public PlaceService(PlaceRepo placeRepo) {
         this.placeRepo = placeRepo;
-        this.googlePlacesService = googlePlacesService;
     }
 
     public Place getPlacebyPlaceId(String placeId) {
