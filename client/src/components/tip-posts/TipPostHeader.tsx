@@ -143,7 +143,9 @@ const TipPostHeader: React.FC<Props> = ({ selectedPlace }) => {
               justify="center"
               alignItems="center"
             >
-              <Typography variant="subtitle1">Lowest</Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                Lowest
+              </Typography>
               <Paper className={classes.tipInfoPaper}>
                 ${selectedPlace.lowestAvg}/hr
               </Paper>
@@ -156,7 +158,9 @@ const TipPostHeader: React.FC<Props> = ({ selectedPlace }) => {
               justify="center"
               alignItems="center"
             >
-              <Typography variant="subtitle1">Typical</Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                Typical
+              </Typography>
               <Paper className={classes.tipInfoPaper}>
                 ${selectedPlace.typicalAvg}/hr
               </Paper>
@@ -169,7 +173,9 @@ const TipPostHeader: React.FC<Props> = ({ selectedPlace }) => {
               justify="center"
               alignItems="center"
             >
-              <Typography variant="subtitle1">Highest</Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                Highest
+              </Typography>
               <Paper className={classes.tipInfoPaper}>
                 ${selectedPlace.highestAvg}/hr
               </Paper>

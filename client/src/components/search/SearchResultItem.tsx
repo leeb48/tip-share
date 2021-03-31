@@ -128,7 +128,7 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
     </Grid>
   );
 
-  const displayTipInfo = (
+  const displayRatingAndType = (
     <Grid justify="space-evenly" container>
       <Grid
         xs={4}
@@ -138,8 +138,10 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
         justify="center"
         alignItems="center"
       >
-        <Typography variant="subtitle1">Lowest</Typography>
-        <Paper className={classes.tipInfoPaper}>$18/hr</Paper>
+        <Typography variant="subtitle1" gutterBottom>
+          Google Rating
+        </Typography>
+        <Paper className={classes.tipInfoPaper}>{result.rating}</Paper>
       </Grid>
       <Grid
         xs={4}
@@ -149,19 +151,12 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
         justify="center"
         alignItems="center"
       >
-        <Typography variant="subtitle1">Typical</Typography>
-        <Paper className={classes.tipInfoPaper}>$24/hr</Paper>
-      </Grid>
-      <Grid
-        xs={4}
-        item
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-      >
-        <Typography variant="subtitle1">Highest</Typography>
-        <Paper className={classes.tipInfoPaper}>$35/hr</Paper>
+        <Typography variant="subtitle1" gutterBottom>
+          Type
+        </Typography>
+        <Paper className={classes.tipInfoPaper}>
+          {result.types[0].toUpperCase()}
+        </Paper>
       </Grid>
     </Grid>
   );
@@ -194,7 +189,7 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
 
                 {/* Top Row End */}
                 {/* Bottom Row Start */}
-                <Grid item>{displayTipInfo}</Grid>
+                <Grid item>{displayRatingAndType}</Grid>
                 {/* Bottom Row End */}
               </Grid>
             </Grid>
