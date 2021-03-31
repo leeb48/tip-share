@@ -89,7 +89,7 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
           variant="outlined"
         >
           <Grid wrap="nowrap" justify="space-between" container>
-            {/* Left Column */}
+            {/* Left Column Start */}
             <Grid sm={4} md={3} item>
               <Grid
                 container
@@ -110,7 +110,8 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
                 </Grid>
               </Grid>
             </Grid>
-            {/* Middle Column */}
+            {/* Left Column End */}
+            {/* Middle Column Start */}
             <Grid sm={7} md={8} item>
               <Grid
                 container
@@ -132,7 +133,8 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
                     </span>
                   </Typography>
                 </Grid>
-                {/* Bottom Row */}
+                {/* Top Row End */}
+                {/* Bottom Row Start */}
                 <Grid item>
                   <Grid justify="space-evenly" container>
                     <Grid
@@ -170,8 +172,10 @@ const SearchResultItem: React.FC<Props> = ({ result }) => {
                     </Grid>
                   </Grid>
                 </Grid>
+                {/* Bottom Row End */}
               </Grid>
             </Grid>
+            {/* Middle Column End */}
             <Grid xs={1} item>
               <IconButton
                 style={{ paddingRight: 0, paddingLeft: 0 }}

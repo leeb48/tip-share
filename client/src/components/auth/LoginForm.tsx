@@ -87,7 +87,6 @@ const Login = () => {
               <TextFieldWithError
                 variant="outlined"
                 fullWidth
-                autoFocus
                 name="username"
                 label="Username"
               />

@@ -76,6 +76,8 @@ const SearchResults = () => {
     </LoadMoreButton>
   );
 
+  // display no results found message when search has done loading
+  // and the results array is empty
   const displayNoResultsFound = !searchLoading &&
     searchResults &&
     searchResults.length === 0 && (
