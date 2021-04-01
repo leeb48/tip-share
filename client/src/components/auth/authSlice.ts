@@ -12,6 +12,7 @@ import {
 import jwt_decode from "jwt-decode";
 
 export type AuthState = {
+  userId?: number;
   username: string;
   authorities: string[];
   isAuthenticated: boolean;
@@ -20,6 +21,7 @@ export type AuthState = {
 };
 
 const initialState: AuthState = {
+  userId: undefined,
   username: "",
   authorities: [],
   isAuthenticated: false,
@@ -32,6 +34,7 @@ export const loginUserReducer: CaseReducer<
   AuthState,
   PayloadAction<LoginSuccessDto>
 > = (state, { payload }) => {
+  state.userId = payload.userId;
   state.username = payload.username;
   state.authorities = payload.authorities;
   state.isAuthenticated = payload.isAuthenticated;
@@ -122,6 +125,7 @@ export const loginUser = (data: LoginUserDto, history: any): AppThunk => async (
     const jwt_decoded: JWTDecoded = jwt_decode(jwt);
     dispatch(
       loginUserAction({
+        userId: jwt_decoded.userId,
         username: jwt_decoded.username,
         authorities: jwt_decoded.authorities.split(","),
         isAuthenticated: true,
@@ -144,6 +148,7 @@ export const authenticateUserFromJWT = (): AppThunk => async (dispatch) => {
 
     dispatch(
       loginUserAction({
+        userId: jwt_decoded.userId,
         username: jwt_decoded.username,
         authorities: jwt_decoded.authorities.split(","),
         isAuthenticated: true,
