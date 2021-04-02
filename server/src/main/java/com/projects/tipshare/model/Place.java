@@ -17,7 +17,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-@Table(name = "place", uniqueConstraints = {@UniqueConstraint(columnNames = {"placeId"})})
+@Table(name = "place", uniqueConstraints = {@UniqueConstraint(columnNames = {"placeIdFromPlacesAPI"})})
 public class Place extends BaseEntity {
 
     @NotBlank
@@ -34,7 +34,7 @@ public class Place extends BaseEntity {
 
     @NotBlank
     @NotNull
-    private String placeId;
+    private String placeIdFromPlacesAPI;
 
     private String imageUrl;
 

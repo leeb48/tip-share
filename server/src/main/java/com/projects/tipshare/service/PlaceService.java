@@ -14,8 +14,12 @@ public class PlaceService {
         this.placeRepo = placeRepo;
     }
 
-    public Place getPlacebyPlaceId(String placeId) {
-        return placeRepo.findByPlaceId(placeId).orElse(null);
+    /**
+     * @param placeId this id is from PlacesAPI, not from database
+     * @return place object
+     */
+    public Place getPlacebyPlaceIdFromPlacesAPI(String placeId) {
+        return placeRepo.findByPlaceIdFromPlacesAPI(placeId).orElse(null);
     }
 
     /**
@@ -31,7 +35,7 @@ public class PlaceService {
             Place newPlace = new Place();
             newPlace.setPlaceAddr(searchResult.formattedAddress);
             newPlace.setPlaceName(searchResult.name);
-            newPlace.setPlaceId(searchResult.placeId);
+            newPlace.setPlaceIdFromPlacesAPI(searchResult.placeId);
             newPlace.setOperational(searchResult.businessStatus);
             if (searchResult.photos != null) {
 

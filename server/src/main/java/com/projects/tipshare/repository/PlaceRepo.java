@@ -13,5 +13,5 @@ import java.util.Optional;
 @Repository
 public interface PlaceRepo extends JpaRepository<Place, Long> {
 
-    Optional<Place> findByPlaceId(String placeId);
+    Optional<Place> findByPlaceIdFromPlacesAPI(String placesIdFromPlacesAPI);
 }

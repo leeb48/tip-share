@@ -53,7 +53,7 @@ class TipPostServiceTest {
         tipPost.setPlaceId("12345");
 
         when(userRepo.findByUsername(anyString())).thenReturn(Optional.of(user));
-        when(placeRepo.findByPlaceId(anyString())).thenReturn(Optional.of(place));
+        when(placeRepo.findByPlaceIdFromPlacesAPI(anyString())).thenReturn(Optional.of(place));
 
         // when
         tipPostService.createNewTipPost(tipPost, user.getUsername());
@@ -96,7 +96,7 @@ class TipPostServiceTest {
         tipPost.setPlaceId("12345");
 
         when(userRepo.findByUsername(anyString())).thenReturn(Optional.of(user));
-        when(placeRepo.findByPlaceId(anyString())).thenReturn(Optional.empty());
+        when(placeRepo.findByPlaceIdFromPlacesAPI(anyString())).thenReturn(Optional.empty());
 
         // when
         Assertions.assertThrows(PlaceNotFoundException.class, () -> {

@@ -12,6 +12,7 @@ import com.projects.tipshare.repository.UserRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service for Tip Post
@@ -29,6 +30,11 @@ public class TipPostService {
         this.placeRepo = placeRepo;
     }
 
+    public Set<TipPost> getTipPostsByPlaceId(Long placeId) {
+
+        return tipPostRepo.findByPlaceId(placeId);
+    }
+
     public void createNewTipPost(CreateTipPostDto createTipPostDto, String username) {
 
         Optional<User> userOptional = userRepo.findByUsername(username);
@@ -39,7 +45,7 @@ public class TipPostService {
 
         String placeId = createTipPostDto.getPlaceId();
 
-        Optional<Place> placeOptional = placeRepo.findByPlaceId(placeId);
+        Optional<Place> placeOptional = placeRepo.findByPlaceIdFromPlacesAPI(placeId);
 
         if (!placeOptional.isPresent()) {
             throw new PlaceNotFoundException("Place with ID: " + placeId + " was not found.");
