@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class UserServiceUnitTest {
 
     @Mock
     UserRepo userRepo;

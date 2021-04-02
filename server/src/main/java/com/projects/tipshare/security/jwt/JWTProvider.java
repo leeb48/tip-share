@@ -1,5 +1,7 @@
 package com.projects.tipshare.security.jwt;
 
+import com.projects.tipshare.model.SecurityUser;
+import com.projects.tipshare.repository.UserRepo;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,12 @@ public class JWTProvider {
 
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
+    private final UserRepo userRepo;
+
+    public JWTProvider(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
+
     public String generateJWT(Authentication authentication, boolean rememberMe) {
 
 
@@ -32,14 +40,17 @@ public class JWTProvider {
                 new Date(now.getTime() + TimeUnit.HOURS.toMillis(JWT_EXPIRATION_TIME_REMEMBER_ME));
 
 
+        SecurityUser user = (SecurityUser) authentication.getPrincipal();
+
+
         return Jwts.builder().setIssuer("TipShare").setSubject("JWT")
+                .claim("userId", user.getUserId())
                 .claim("username", authentication.getName())
                 .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                 .setIssuedAt(now)
                 .setExpiration(expireDate)
                 .signWith(key)
                 .compact();
-
     }
 
     public boolean validateJWT(String jwt) {

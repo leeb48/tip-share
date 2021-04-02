@@ -39,9 +39,6 @@ public class PlaceService {
             } else {
                 newPlace.setImageUrl(null);
             }
-            newPlace.setHighestAvg(0);
-            newPlace.setTypicalAvg(0);
-            newPlace.setLowestAvg(0);
 
             return placeRepo.save(newPlace);
         } catch (Exception e) {

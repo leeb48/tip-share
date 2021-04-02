@@ -1,14 +1,19 @@
 package com.projects.tipshare.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * Place Entity
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
@@ -33,13 +38,9 @@ public class Place extends BaseEntity {
 
     private String imageUrl;
 
-    @NotNull
-    private Integer highestAvg;
-
-    @NotNull
-    private Integer typicalAvg;
-
-    @NotNull
-    private Integer lowestAvg;
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<TipPost> tipPosts = new HashSet<>();
 }
