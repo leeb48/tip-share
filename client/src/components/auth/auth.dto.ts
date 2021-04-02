@@ -11,6 +11,7 @@ export interface LoginUserDto {
 }
 
 export interface JWTDecoded {
+  userId: number;
   authorities: string;
   exp: number;
   iat: number;
@@ -20,6 +21,7 @@ export interface JWTDecoded {
 }
 
 export interface LoginSuccessDto {
+  userId: number;
   username: string;
   authorities: string[];
   isAuthenticated: boolean;
