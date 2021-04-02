@@ -71,7 +71,7 @@ export const loadSelectedPlaceDetail = (
       placeSearchResult
     );
 
-    const path = `/tip-post/${res.data.placeId}`;
+    const path = `/tip-post/${res.data.placeIdFromPlacesAPI}`;
 
     history.push(path);
 

@@ -2,7 +2,7 @@ export interface Place {
   placeAddr: string;
   placeName: string;
   operational: string;
-  placeId: string;
+  placeIdFromPlacesAPI: string;
   imageUrl?: string;
   highestAvg: number;
   typicalAvg: number;
