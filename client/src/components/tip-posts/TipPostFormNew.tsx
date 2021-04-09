@@ -1,10 +1,14 @@
 import { Button, Grid, Typography } from "@material-ui/core";
 import MoneyIcon from "@material-ui/icons/AttachMoney";
+import { useAppDispatch } from "app/store";
 import CommentTextField from "components/componentUtils/inputUtils/CommentTextField";
 import TextFieldWithError from "components/componentUtils/inputUtils/TextFieldWithError";
 import { Form, Formik } from "formik";
 import React from "react";
+import { RouteComponentProps, useHistory } from "react-router";
 import styled from "styled-components";
+import { CreateNewTipPostDto } from "./TipPost.dto";
+import { createNewTipPost } from "./TipPostSlice";
 
 const GutterGrid = styled(Grid)``;
 
@@ -28,22 +32,23 @@ const CommentGrid = styled(Grid)`
   margin-bottom: 2rem;
 `;
 
-interface fValues {
-  lowest: number;
-  typical: number;
-  highest: number;
-
-  comment: string;
-}
-
-const initialValues: fValues = {
-  lowest: 0,
-  typical: 0,
-  highest: 0,
-  comment: "",
+const initialValues: CreateNewTipPostDto = {
+  placeIdFromPlacesAPI: "",
+  lowest: undefined,
+  typical: undefined,
+  highest: undefined,
+  comments: "",
 };
 
-const TipPostFormNew = () => {
+interface MatchParams {
+  placeId: string;
+}
+interface Props extends RouteComponentProps<MatchParams> {}
+
+const TipPostFormNew: React.FC<Props> = ({ match: { params } }) => {
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+
   return (
     <RootGrid container justify="center">
       <GutterGrid item sm={1} />
@@ -58,7 +63,10 @@ const TipPostFormNew = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={(values) => {
-            console.log(values);
+            // this value is needed in the backend to establish
+            // relationship between tip post and place
+            values.placeIdFromPlacesAPI = params.placeId;
+            dispatch(createNewTipPost(values, history, params.placeId));
           }}
         >
           {({ values }) => (
@@ -101,7 +109,7 @@ const TipPostFormNew = () => {
                       name="highest"
                       size="small"
                       variant="outlined"
-                      label="Typical"
+                      label="Highest"
                       type="number"
                     />
                   </Grid>
@@ -109,9 +117,9 @@ const TipPostFormNew = () => {
               </TipInputGrid>
               <CommentGrid item>
                 <CommentTextField
-                  name="comment"
+                  name="comments"
                   maxLength={365}
-                  helperText={`${values.comment.length}/${365}`}
+                  helperText={`${values.comments.length}/${365}`}
                   label="Comments (max 365 characters)"
                   variant="outlined"
                 />

@@ -23,7 +23,11 @@ const Routes = () => {
         <Route exact path="/register" component={RegisterForm} />
         <Route exact path="/tip-post/:placeId" component={TipPostMain} />
         {/* Private */}
-        <PrivateRoute exact path="/tip-post/new" component={TipPostFormNew} />
+        <PrivateRoute
+          exact
+          path="/tip-post/new/:placeId"
+          component={TipPostFormNew}
+        />
         <PrivateRoute
           exact
           path="/tip-post/edit/:id"

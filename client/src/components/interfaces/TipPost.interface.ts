@@ -5,7 +5,7 @@ export interface TipPost {
   ownerUsername: string;
   ownerUserId: number;
   comments: string;
-  highestAvg: number;
-  typicalAvg: number;
-  lowestAvg: number;
+  highest: number;
+  typical: number;
+  lowest: number;
 }

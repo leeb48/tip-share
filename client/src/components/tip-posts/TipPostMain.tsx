@@ -7,19 +7,24 @@ import {
   Typography,
 } from "@material-ui/core";
 import { RootState } from "app/rootReducer";
+import { useAppDispatch } from "app/store";
+import LoadingSpinner from "components/layout/LoadingSpinner";
 import { useEffect } from "react";
 import { shallowEqual, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import TipPostHeader from "./TipPostHeader";
+import {
+  loadSelectedPlaceByPlaceId,
+  loadSelectedPlaceTipPosts,
+} from "./TipPostSlice";
 import TipPostUserShareItem from "./TipPostUserShareItem";
-import LoadingSpinner from "components/layout/LoadingSpinner";
-import { RouteComponentProps, RouteProps } from "react-router";
-import { useAppDispatch } from "app/store";
-import { loadSelectedPlaceByPlaceId } from "./TipPostSlice";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     rootGrid: {
       marginTop: theme.spacing(4),
+      marginBottom: theme.spacing(4),
+      height: "100vh",
     },
 
     tipPostRoot: {
@@ -43,15 +48,24 @@ interface Props extends RouteComponentProps<MatchParams> {
 const TipPostMain: React.FC<Props> = ({ match: { params } }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const { tipPostStateLoading, selectedPlace } = useSelector(
-    (state: RootState) => {
-      return {
-        tipPostStateLoading: state.tipPost.tipPostStateLoading,
-        selectedPlace: state.tipPost.selectedPlace,
-      };
-    },
-    shallowEqual
-  );
+  const {
+    tipPostStateLoading,
+    selectedPlace,
+    selectedPlaceTipPosts,
+  } = useSelector((state: RootState) => {
+    return {
+      tipPostStateLoading: state.tipPost.tipPostStateLoading,
+      selectedPlace: state.tipPost.selectedPlace,
+      selectedPlaceTipPosts: state.tipPost.selectedPlaceTipPosts,
+    };
+  }, shallowEqual);
+
+  // load the tip posts that belong to the currently selected place
+  useEffect(() => {
+    if (selectedPlace && selectedPlace.id) {
+      dispatch(loadSelectedPlaceTipPosts(selectedPlace.id));
+    }
+  }, [selectedPlace?.id]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,21 +82,21 @@ const TipPostMain: React.FC<Props> = ({ match: { params } }) => {
     <LoadingSpinner />
   ) : (
     <Grid justify="center" className={classes.rootGrid} container>
-      <Grid item sm={1} />
-
       {selectedPlace && (
         <Grid
           className={classes.tipPostRoot}
           item
-          sm={10}
-          xs={12}
+          sm={12}
           container
           direction="column"
         >
           <Grid container direction="column" spacing={3}>
             {/* Header Component */}
             <Grid item>
-              <TipPostHeader selectedPlace={selectedPlace} />
+              <TipPostHeader
+                selectedPlace={selectedPlace}
+                placeId={params.placeId}
+              />
             </Grid>
 
             <Grid item>
@@ -98,21 +112,17 @@ const TipPostMain: React.FC<Props> = ({ match: { params } }) => {
             </Grid>
 
             {/* Bottom Component (User post component) */}
-            <Grid item container spacing={3}>
-              <Grid item>
-                <TipPostUserShareItem />
-              </Grid>
-              <Grid item>
-                <TipPostUserShareItem />
-              </Grid>
-              <Grid item>
-                <TipPostUserShareItem />
-              </Grid>
+            <Grid item container justify="center" spacing={3}>
+              {selectedPlaceTipPosts.length > 0 &&
+                selectedPlaceTipPosts.map((tipPost) => (
+                  <Grid key={tipPost.id} item xs={12}>
+                    <TipPostUserShareItem tipPost={tipPost} />
+                  </Grid>
+                ))}
             </Grid>
           </Grid>
         </Grid>
       )}
-      <Grid item sm={1} />
     </Grid>
   );
 };

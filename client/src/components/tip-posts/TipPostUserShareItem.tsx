@@ -13,6 +13,7 @@ import { useTheme, withTheme } from "@material-ui/styles";
 import styled from "styled-components";
 import RemoveIcon from "@material-ui/icons/Backspace";
 import EditIcon from "@material-ui/icons/Edit";
+import { TipPost } from "components/interfaces/TipPost.interface";
 
 const TipInfoPaper = styled(Paper)`
   padding: 8px 15px;
@@ -92,7 +93,9 @@ const StyledFlagIcon = styled(FlagIcon)`
 `;
 
 const EditRemoveBtnGrid = styled(Grid)``;
-const PostContentGrid = styled(Grid)``;
+const PostContentGrid = styled(Grid)`
+  min-height: 5rem;
+`;
 const FeedbackBtnGrid = styled(Grid)``;
 
 const TipInfoGrid = withTheme(
@@ -103,7 +106,11 @@ const TipInfoGrid = withTheme(
   `
 );
 
-const TipPostUserShareItem = () => {
+interface Props {
+  tipPost: TipPost;
+}
+
+const TipPostUserShareItem: React.FC<Props> = ({ tipPost }) => {
   const muiTheme = useTheme();
 
   return (
@@ -129,7 +136,7 @@ const TipPostUserShareItem = () => {
                 alignItems="center"
               >
                 <Typography variant="subtitle1">Lowest</Typography>
-                <TipInfoPaper>$10/hr</TipInfoPaper>
+                <TipInfoPaper>${tipPost.lowest}/hr</TipInfoPaper>
               </TipInfoGrid>
               <TipInfoGrid
                 xs={4}
@@ -140,7 +147,7 @@ const TipPostUserShareItem = () => {
                 alignItems="center"
               >
                 <Typography variant="subtitle1">Typical</Typography>
-                <TipInfoPaper>$15/hr</TipInfoPaper>
+                <TipInfoPaper>${tipPost.typical}/hr</TipInfoPaper>
               </TipInfoGrid>
               <TipInfoGrid
                 xs={4}
@@ -151,7 +158,7 @@ const TipPostUserShareItem = () => {
                 alignItems="center"
               >
                 <Typography variant="subtitle1">Highest</Typography>
-                <TipInfoPaper>$120/hr</TipInfoPaper>
+                <TipInfoPaper>${tipPost.highest}/hr</TipInfoPaper>
               </TipInfoGrid>
             </UserSharePost>
             <Grid item sm={12} md={9} container direction="column" spacing={2}>
@@ -164,14 +171,10 @@ const TipPostUserShareItem = () => {
                 </RemoveBtn>
               </EditRemoveBtnGrid>
               <PostContentGrid item>
-                <Typography component="p" variant="body2">
-                  (Max 365 Characters) Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Rerum, earum voluptas magnam incidunt id
-                  quasi labore iste impedit officiis doloribus dolorum totam
-                  vitae nisi ipsum, et mollitia reprehenderit excepturi est
-                  nesciunt atque. Accusantium odio cumque, quo qui provident
-                  quos quia nulla cupiditate! Vitae beatae unde sapiente
-                  similique perspiciatis.
+                <Typography component="p" variant="body1">
+                  {tipPost.comments
+                    ? tipPost.comments
+                    : "User did not provide any comments."}
                 </Typography>
               </PostContentGrid>
               <FeedbackBtnGrid

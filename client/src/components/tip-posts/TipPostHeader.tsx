@@ -8,8 +8,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Place } from "components/interfaces/Places.interface";
-import React from "react";
 import ImageNotFound from "image/no-image.png";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
   createStyles({
@@ -63,9 +64,10 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
 
 interface Props {
   selectedPlace: Place;
+  placeId?: string;
 }
 
-const TipPostHeader: React.FC<Props> = ({ selectedPlace }) => {
+const TipPostHeader: React.FC<Props> = ({ selectedPlace, placeId }) => {
   const classes = useStyles({ selectedPlace });
 
   return (
@@ -105,7 +107,12 @@ const TipPostHeader: React.FC<Props> = ({ selectedPlace }) => {
               </Typography>
             </Grid>
             <Grid item>
-              <Button variant="outlined" color="primary">
+              <Button
+                component={Link}
+                to={`/tip-post/new/${placeId}`}
+                variant="outlined"
+                color="primary"
+              >
                 Leave Tip
               </Button>
             </Grid>

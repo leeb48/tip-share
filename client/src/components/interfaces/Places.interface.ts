@@ -1,4 +1,5 @@
 export interface Place {
+  id: string;
   placeAddr: string;
   placeName: string;
   operational: string;

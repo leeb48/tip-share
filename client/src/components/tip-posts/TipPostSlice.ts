@@ -4,17 +4,21 @@ import { setAlert } from "components/alert/alertSlice";
 import { getErrorMessage } from "components/componentUtils/getErrorMessage";
 import { Result } from "components/interfaces/GooglePlaces.interface";
 import { Place } from "components/interfaces/Places.interface";
+import { TipPost } from "components/interfaces/TipPost.interface";
 import { springAxios } from "config/springAxios";
 import { RouteComponentProps } from "react-router";
+import { CreateNewTipPostDto } from "./TipPost.dto";
 
 export interface TipPostState {
   tipPostStateLoading: boolean;
   selectedPlace?: Place;
+  selectedPlaceTipPosts: TipPost[];
 }
 
 const initialState: TipPostState = {
   tipPostStateLoading: false,
   selectedPlace: undefined,
+  selectedPlaceTipPosts: [],
 };
 
 // ------------------------------------------------------------------------------
@@ -34,23 +38,70 @@ export const loadSelectedPlaceReducer: CaseReducer<
   state.selectedPlace = payload;
 };
 
+export const loadSelectedPlaceTipPostsReducer: CaseReducer<
+  TipPostState,
+  PayloadAction<TipPost[]>
+> = (state, { payload }) => {
+  state.selectedPlaceTipPosts = payload;
+};
+
+export const createNewTipPostReducer: CaseReducer<
+  TipPostState,
+  PayloadAction<TipPost>
+> = (state, { payload }) => {
+  state.selectedPlaceTipPosts.unshift(payload);
+};
+
 const TipPostSlice = createSlice({
   name: "tip-post",
   initialState,
   reducers: {
     setTipPostStateLoadingAction: setTipPostStateLoadingReducer,
     loadSelectedPlaceAction: loadSelectedPlaceReducer,
+    loadSelectedPlaceTipPostsAction: loadSelectedPlaceTipPostsReducer,
+    createNewTipPostAction: createNewTipPostReducer,
   },
 });
 
 export const {
   setTipPostStateLoadingAction,
   loadSelectedPlaceAction,
+  loadSelectedPlaceTipPostsAction,
+  createNewTipPostAction,
 } = TipPostSlice.actions;
 export default TipPostSlice.reducer;
 
 //-------------------------------------------------------------------------------
 // Thunks
+
+export const createNewTipPost = (
+  newTipPost: CreateNewTipPostDto,
+  history: RouteComponentProps["history"],
+  placeIdFromPlacesAPI: string
+): AppThunk => async (dispatch) => {
+  try {
+    const res = await springAxios.post<TipPost>("/tip-post/create", newTipPost);
+
+    dispatch(createNewTipPostAction(res.data));
+    history.push(`/tip-post/${placeIdFromPlacesAPI}`);
+  } catch (error) {
+    const errorMessage = getErrorMessage(error);
+    dispatch(setAlert({ alertType: "error", message: errorMessage }));
+  }
+};
+
+export const loadSelectedPlaceTipPosts = (placeId: string): AppThunk => async (
+  dispatch
+) => {
+  try {
+    const res = await springAxios.get<TipPost[]>(`/tip-post/place/${placeId}`);
+
+    dispatch(loadSelectedPlaceTipPostsAction(res.data));
+  } catch (error) {
+    const errorMessage = getErrorMessage(error);
+    dispatch(setAlert({ alertType: "error", message: errorMessage }));
+  }
+};
 
 /**
  * Sends the search result json object from PlacesAPI to the backend to retrieve
@@ -86,15 +137,17 @@ export const loadSelectedPlaceDetail = (
 /**
  * Retrieves the place that is stored in the database by using placeId.
  * This thunk is used to retrieve data at the PlaceDetail component level.
- * @param placeId the id given by PlacesAPI used to query the database
+ * @param placeIdFromPlacesAPI the id given by PlacesAPI used to query the database
  * @returns
  */
-export const loadSelectedPlaceByPlaceId = (placeId: string): AppThunk => async (
-  dispatch
-) => {
+export const loadSelectedPlaceByPlaceId = (
+  placeIdFromPlacesAPI: string
+): AppThunk => async (dispatch) => {
   try {
     dispatch(setTipPostStateLoadingAction(true));
-    const res = await springAxios.get<Place>(`places/details/${placeId}`);
+    const res = await springAxios.get<Place>(
+      `places/details/${placeIdFromPlacesAPI}`
+    );
 
     dispatch(loadSelectedPlaceAction(res.data));
     dispatch(setTipPostStateLoadingAction(false));
