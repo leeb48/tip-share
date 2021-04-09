@@ -3,6 +3,7 @@ package com.projects.tipshare.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * User Model
+ * User Entity
  */
 
 @EqualsAndHashCode(callSuper = true)
@@ -46,5 +47,10 @@ public class User extends BaseEntity {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<TipPost> tipPosts = new HashSet<>();
 
 }

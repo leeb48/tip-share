@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/auth/login").permitAll()
                 .mvcMatchers("/api/test/admin").hasRole(AuthoritiesConstants.ADMIN)
                 .mvcMatchers("/api/test/user").hasRole(AuthoritiesConstants.USER)
+                .mvcMatchers("/api/tip-post/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic();

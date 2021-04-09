@@ -2,10 +2,11 @@ package com.projects.tipshare.exception;
 
 import com.projects.tipshare.exception.authexception.DuplicateUsernameException;
 import com.projects.tipshare.exception.authexception.DuplicateUsernameResponse;
+import com.projects.tipshare.exception.authexception.UnauthorizedException;
+import com.projects.tipshare.exception.authexception.UnauthorizedResponse;
 import com.projects.tipshare.exception.googleapiexcpetion.SearchFailedException;
 import com.projects.tipshare.exception.googleapiexcpetion.SearchFailedResponse;
-import com.projects.tipshare.exception.serviceException.LoadPlaceDetailFailException;
-import com.projects.tipshare.exception.serviceException.LoadPlaceDetailFailResponse;
+import com.projects.tipshare.exception.serviceException.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,10 +34,40 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
     }
 
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex, WebRequest req) {
+        UnauthorizedResponse res = new UnauthorizedResponse(ex.getMessage());
+
+        return new ResponseEntity<>(res, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler
     public final ResponseEntity<Object> handleSavePlaceFailedException(LoadPlaceDetailFailException ex, WebRequest req) {
         LoadPlaceDetailFailResponse res = new LoadPlaceDetailFailResponse(ex.getMessage());
 
         return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex, WebRequest req) {
+        UserNotFoundResponse res = new UserNotFoundResponse(ex.getMessage());
+
+        return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handlePlaceNotFoundException(PlaceNotFoundException ex, WebRequest req) {
+        PlaceNotFoundResponse res = new PlaceNotFoundResponse(ex.getMessage());
+
+        return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+    }
+
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleTipPostNotFound(TipPostNotFoundException ex, WebRequest req) {
+        TipPostNotFoundResponse res = new TipPostNotFoundResponse(ex.getMessage());
+
+        return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
     }
 }

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repository for User Entity
+ */
 @Repository
 public interface UserRepo extends JpaRepository<User, Long> {
 

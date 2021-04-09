@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class AuthControllerTest {
+class AuthControllerIT {
 
     private final String USERNAME = "user1";
     private final String PASSWORD = "12345";

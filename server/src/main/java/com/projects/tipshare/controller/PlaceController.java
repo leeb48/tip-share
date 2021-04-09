@@ -29,7 +29,7 @@ public class PlaceController {
 
         try {
 
-            Place foundPlace = placeService.getPlacebyPlaceId(placesSearchResult.placeId);
+            Place foundPlace = placeService.getPlacebyPlaceIdFromPlacesAPI(placesSearchResult.placeId);
 
             if (foundPlace != null) {
                 return new ResponseEntity<>(foundPlace, HttpStatus.OK);
@@ -43,13 +43,13 @@ public class PlaceController {
         }
     }
 
-    @GetMapping("/details/{placeId}")
-    public ResponseEntity<?> retrievePlaceDetailByPlaceId(@PathVariable(value = "placeId") String placeId) {
+    @GetMapping("/details/{placeIdFromPlacesAPI}")
+    public ResponseEntity<?> retrievePlaceDetailByPlaceIdFromPlacesAPI(@PathVariable(value = "placeIdFromPlacesAPI") String placeIdFromPlacesAPI) {
 
-        Place foundPlace = placeService.getPlacebyPlaceId(placeId);
+        Place foundPlace = placeService.getPlacebyPlaceIdFromPlacesAPI(placeIdFromPlacesAPI);
 
         if (foundPlace == null) {
-            throw new LoadPlaceDetailFailException("Place with place ID " + placeId + " does not exist.");
+            throw new LoadPlaceDetailFailException("Place with place ID " + placeIdFromPlacesAPI + " does not exist.");
         } else {
             return new ResponseEntity<>(foundPlace, HttpStatus.OK);
         }
