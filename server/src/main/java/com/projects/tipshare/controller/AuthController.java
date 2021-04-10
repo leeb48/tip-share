@@ -31,6 +31,7 @@ public class AuthController {
 
     @GetMapping()
     public ResponseEntity<?> test() {
+        jwtProvider.validateJWT("abc");
         return ResponseEntity.ok("ok");
     }
 
