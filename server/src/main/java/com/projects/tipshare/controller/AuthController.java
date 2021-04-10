@@ -13,7 +13,7 @@ public class AuthController {
 
     private final ValidationService validationService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-//    private final JWTProvider jwtProvider;
+    private final JWTProvider jwtProvider;
 //    private final UserService userService;
 
 
@@ -23,7 +23,7 @@ public class AuthController {
                           UserService userService) {
         this.validationService = validationService;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
-//        this.jwtProvider = jwtProvider;
+        this.jwtProvider = jwtProvider;
 //        this.userService = userService;
     }
 
