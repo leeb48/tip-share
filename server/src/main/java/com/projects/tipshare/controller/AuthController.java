@@ -32,7 +32,7 @@ public class AuthController {
     @GetMapping()
     public ResponseEntity<?> test() {
 
-        userService.removeUser("user");
+        authenticationManagerBuilder.isConfigured();
 
         return ResponseEntity.ok("ok");
     }
