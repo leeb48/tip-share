@@ -22,4 +22,4 @@ google-places:
 
 logging:
   level:
-    org.springframework.beans.factory: DEBUG
+    org.springframework.beans: DEBUG
