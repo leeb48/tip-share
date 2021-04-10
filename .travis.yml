@@ -8,8 +8,6 @@ script:
   - mvn -f server/pom.xml package -B
 
 after_success:
-  - sudo npm i -g npm
-
   - docker build -t bongster228/tipshare-server ./server --build-arg API_KEY=$API_KEY
   - docker build -t bongster228/tipshare-client ./client
   - docker build -t bongster228/tipshare-nginx ./nginx

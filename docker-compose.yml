@@ -1,27 +1,30 @@
 version: "3"
 services:
   tipshare-nginx:
+    image: bongster228/tipshare-nginx
     depends_on:
       - tipshare-backend
       - tipshare-client
     restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: ./nginx
     ports:
       - "3001:3001"
 
   tipshare-backend:
-    build:
-      dockerfile: Dockerfile
-      context: ./server
+    image: bongster228/tipshare-server
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: ./server
     env_file: .env
 
   tipshare-client:
+    image: bongster228/tipshare-client
     stdin_open: true
-    build:
-      dockerfile: Dockerfile
-      context: ./client
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: ./client
 
 networks:
   default:
