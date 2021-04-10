@@ -1,12 +1,11 @@
 package com.projects.tipshare.security.jwt;
 
 import com.projects.tipshare.model.SecurityUser;
-import com.projects.tipshare.repository.UserRepo;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
@@ -20,28 +19,19 @@ import java.util.concurrent.TimeUnit;
 
 import static com.projects.tipshare.security.SecurityConstants.*;
 
-@Component
+@Service
 public class JWTProvider {
 
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
-    private final UserRepo userRepo;
-
-    public JWTProvider(UserRepo userRepo) {
-        this.userRepo = userRepo;
-    }
-
     public String generateJWT(Authentication authentication, boolean rememberMe) {
-
 
         Date now = new Date(System.currentTimeMillis());
         Date expireDate = rememberMe ?
                 new Date(now.getTime() + TimeUnit.HOURS.toMillis(JWT_EXPIRATION_TIME)) :
                 new Date(now.getTime() + TimeUnit.HOURS.toMillis(JWT_EXPIRATION_TIME_REMEMBER_ME));
 
-
         SecurityUser user = (SecurityUser) authentication.getPrincipal();
-
 
         return Jwts.builder().setIssuer("TipShare").setSubject("JWT")
                 .claim("userId", user.getUserId())
@@ -58,7 +48,6 @@ public class JWTProvider {
         try {
 
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt);
-
 
             return true;
 
@@ -77,7 +66,6 @@ public class JWTProvider {
 
     public String getUsernameFromJWT(String jwt) {
 
-
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -90,7 +78,6 @@ public class JWTProvider {
     }
 
     public String getAuthoritiesFromJWT(String jwt) {
-
 
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
