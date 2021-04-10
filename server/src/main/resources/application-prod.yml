@@ -18,8 +18,3 @@ spring:
 
 google-places:
   apiKey: ${API_KEY}
-
-
-logging:
-  level:
-    root: DEBUG
