@@ -1,0 +1,32 @@
+version: "3"
+services:
+  tipshare-nginx:
+    depends_on:
+      - tipshare-backend
+      - tipshare-client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "3001:3001"
+
+  tipshare-backend:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    env_file: .env
+
+  tipshare-client:
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+
+networks:
+  default:
+    external:
+      name: droplet-nginx
+# Port configuration
+# tipshare-nginx:3001 ---> tipshare-backend:8001
+# tipshare-nginx:3002 ---> tipshare-client:5001

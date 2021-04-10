@@ -1,0 +1,19 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+script:
+  - mvn -f server/pom.xml package -B
+
+after_success:
+  - docker build -t bongster228/tipshare-server ./server
+  - docker build -t bongster228/tipshare-app-client ./client
+  - docker build -t bongster228/tipshare-nginx ./nginx
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push bongster228/tipshare-server
+  - docker push bongster228/tipshare-client
+  - docker push bongster228/tipshare-nginx
