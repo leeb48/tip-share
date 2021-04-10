@@ -6,6 +6,8 @@ ARG API_KEY
 ENV SPRING_BOOT_PROFILE ${SPRING_BOOT_PROFILE}
 ENV API_KEY ${API_KEY}
 
+RUN mvn -f server/pom.xml package -B 
+
 VOLUME /tmp
-COPY ./target/tipshare-0.1.jar tipshare.jar
-ENTRYPOINT ["java","-jar","/tipshare.jar"]
+COPY ./target/ .
+ENTRYPOINT ["java","-jar","/tipshare-0.1.jar"]
