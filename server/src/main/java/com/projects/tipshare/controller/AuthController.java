@@ -31,7 +31,9 @@ public class AuthController {
 
     @GetMapping()
     public ResponseEntity<?> test() {
-        jwtProvider.validateJWT("abc");
+
+        userService.removeUser("user");
+
         return ResponseEntity.ok("ok");
     }
 
