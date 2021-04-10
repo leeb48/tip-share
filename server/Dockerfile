@@ -8,5 +8,4 @@ ENV API_KEY ${API_KEY}
 
 VOLUME /tmp
 COPY ./target/tipshare-0.1.jar tipshare.jar
-COPY ./target/ .
 ENTRYPOINT ["java","-jar","/tipshare.jar"]

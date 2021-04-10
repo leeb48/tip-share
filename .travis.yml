@@ -9,11 +9,11 @@ script:
 
 after_success:
   - docker build -t bongster228/tipshare-server ./server --build-arg API_KEY=$API_KEY --build-arg SPRING_BOOT_PROFILE=$SPRING_BOOT_PROFILE
-  - docker build -t bongster228/tipshare-client ./client
-  - docker build -t bongster228/tipshare-nginx ./nginx
+  # - docker build -t bongster228/tipshare-client ./client
+  # - docker build -t bongster228/tipshare-nginx ./nginx
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
   - docker push bongster228/tipshare-server
-  - docker push bongster228/tipshare-client
-  - docker push bongster228/tipshare-nginx
+  # - docker push bongster228/tipshare-client
+  # - docker push bongster228/tipshare-nginx
