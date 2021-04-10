@@ -6,6 +6,7 @@ spring:
     hikari:
       auto-commit: false
 
+
   jpa:
     show-sql: true
     hibernate:
@@ -17,3 +18,7 @@ spring:
 
 google-places:
   apiKey: ${API_KEY}
+
+
+logging:
+  level: debug

@@ -34,6 +34,7 @@ public class AuthController {
     private final JWTProvider jwtProvider;
     private final UserService userService;
 
+
     public AuthController(ValidationService validationService,
                           AuthenticationManagerBuilder authenticationManagerBuilder,
                           JWTProvider jwtProvider, UserService userService) {
