@@ -20,4 +20,4 @@ google-places:
   apiKey: ${API_KEY}
 logging:
   level:
-    org.springframework.bean: DEBUG
+    org.springframework.beans: DEBUG
