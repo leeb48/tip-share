@@ -21,4 +21,4 @@ google-places:
 
 
 logging:
-  level: debug
+  level: DEBUG
