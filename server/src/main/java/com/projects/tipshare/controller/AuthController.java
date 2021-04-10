@@ -106,6 +106,7 @@ public class AuthController {
                 return new ResponseEntity<>(jsonResponse.toString(), httpHeaders, HttpStatus.OK);
             }
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
 
         JSONObject jsonResponse = new JSONObject();
