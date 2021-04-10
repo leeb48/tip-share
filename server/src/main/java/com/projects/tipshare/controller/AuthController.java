@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final ValidationService validationService;
-//    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 //    private final JWTProvider jwtProvider;
 //    private final UserService userService;
 
@@ -22,7 +22,7 @@ public class AuthController {
                           JWTProvider jwtProvider,
                           UserService userService) {
         this.validationService = validationService;
-//        this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
 //        this.jwtProvider = jwtProvider;
 //        this.userService = userService;
     }
