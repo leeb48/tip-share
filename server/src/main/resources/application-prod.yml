@@ -21,4 +21,5 @@ google-places:
 
 
 logging:
-  level: DEBUG
+  level:
+    com.projects.tipshare: DEBUG
