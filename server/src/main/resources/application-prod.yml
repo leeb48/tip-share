@@ -15,9 +15,5 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-logging:
-  level:
-    org.springframework.security.web.FilterChainProxy: DEBUG
-
 google-places:
   apiKey: ${API_KEY}
