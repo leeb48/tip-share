@@ -13,12 +13,14 @@ export interface TipPostState {
   tipPostStateLoading: boolean;
   selectedPlace?: Place;
   selectedPlaceTipPosts: TipPost[];
+  selectedTipPost?: TipPost;
 }
 
 const initialState: TipPostState = {
   tipPostStateLoading: false,
   selectedPlace: undefined,
   selectedPlaceTipPosts: [],
+  selectedTipPost: undefined,
 };
 
 // ------------------------------------------------------------------------------
@@ -45,6 +47,13 @@ export const loadSelectedPlaceTipPostsReducer: CaseReducer<
   state.selectedPlaceTipPosts = payload;
 };
 
+export const loadSingleTipPostReducer: CaseReducer<
+  TipPostState,
+  PayloadAction<TipPost>
+> = (state, { payload }) => {
+  state.selectedTipPost = payload;
+};
+
 export const createNewTipPostReducer: CaseReducer<
   TipPostState,
   PayloadAction<TipPost>
@@ -59,6 +68,7 @@ const TipPostSlice = createSlice({
     setTipPostStateLoadingAction: setTipPostStateLoadingReducer,
     loadSelectedPlaceAction: loadSelectedPlaceReducer,
     loadSelectedPlaceTipPostsAction: loadSelectedPlaceTipPostsReducer,
+    loadSingleTipPostAction: loadSingleTipPostReducer,
     createNewTipPostAction: createNewTipPostReducer,
   },
 });
@@ -67,6 +77,7 @@ export const {
   setTipPostStateLoadingAction,
   loadSelectedPlaceAction,
   loadSelectedPlaceTipPostsAction,
+  loadSingleTipPostAction,
   createNewTipPostAction,
 } = TipPostSlice.actions;
 export default TipPostSlice.reducer;
@@ -74,6 +85,14 @@ export default TipPostSlice.reducer;
 //-------------------------------------------------------------------------------
 // Thunks
 
+/**
+ * Create a new tip post to a place of interest
+ * @param newTipPost the data of the new tip post
+ * @param history used to redirect the user
+ * @param placeIdFromPlacesAPI the place id from PlacesAPI that will be used to
+ * create a relationship between the tip post and the place
+ * @returns
+ */
 export const createNewTipPost = (
   newTipPost: CreateNewTipPostDto,
   history: RouteComponentProps["history"],
@@ -90,6 +109,22 @@ export const createNewTipPost = (
   }
 };
 
+export const loadSingleTipPost = (tipPostId: string): AppThunk => async (
+  dispatch
+) => {
+  try {
+    const res = await springAxios.get<TipPost>(`/tip-post/${tipPostId}`);
+    dispatch(loadSingleTipPostAction(res.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/**
+ * Load all the tip posts that belongs to a place
+ * @param placeId the id given by PlacesAPI
+ * @returns retrives all the tip posts made to a place
+ */
 export const loadSelectedPlaceTipPosts = (placeId: string): AppThunk => async (
   dispatch
 ) => {

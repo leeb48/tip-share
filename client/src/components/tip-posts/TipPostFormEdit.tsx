@@ -1,10 +1,15 @@
 import { Button, Grid, Typography } from "@material-ui/core";
 import MoneyIcon from "@material-ui/icons/AttachMoney";
+import { RootState } from "app/rootReducer";
+import { useAppDispatch } from "app/store";
 import CommentTextField from "components/componentUtils/inputUtils/CommentTextField";
 import TextFieldWithError from "components/componentUtils/inputUtils/TextFieldWithError";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
+import { shallowEqual, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import styled from "styled-components";
+import { loadSingleTipPost } from "./TipPostSlice";
 
 const GutterGrid = styled(Grid)``;
 
@@ -43,7 +48,25 @@ const initialValues: fValues = {
   comment: "",
 };
 
-const TipPostFormEdit = () => {
+interface MatchParams {
+  tipPostId: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> {}
+
+const TipPostFormEdit: React.FC<Props> = ({ match: { params } }) => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(loadSingleTipPost(params.tipPostId));
+  }, [dispatch, params.tipPostId]);
+
+  const { selectedTipPost } = useSelector((state: RootState) => {
+    return {
+      selectedTipPost: state.tipPost.selectedTipPost,
+    };
+  }, shallowEqual);
+
   return (
     <RootGrid container justify="center">
       <GutterGrid item sm={1} />

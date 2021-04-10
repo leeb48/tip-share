@@ -30,7 +30,7 @@ const Routes = () => {
         />
         <PrivateRoute
           exact
-          path="/tip-post/edit/:id"
+          path="/tip-post/edit/:tipPostId"
           component={TipPostFormEdit}
         />
         <PrivateRoute exact path="/profile" component={Profile} />

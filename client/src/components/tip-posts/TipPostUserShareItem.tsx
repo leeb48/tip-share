@@ -1,4 +1,5 @@
 import {
+  Button,
   ButtonBase,
   Grid,
   Paper,
@@ -14,6 +15,7 @@ import styled from "styled-components";
 import RemoveIcon from "@material-ui/icons/Backspace";
 import EditIcon from "@material-ui/icons/Edit";
 import { TipPost } from "components/interfaces/TipPost.interface";
+import { Link } from "react-router-dom";
 
 const TipInfoPaper = styled(Paper)`
   padding: 8px 15px;
@@ -41,22 +43,22 @@ const FeedbackBtnGroup = styled(Grid)`
   margin-bottom: 8px;
 `;
 
-const FeedbackBtn = styled(ButtonBase)`
+const FeedbackBtn = styled(({ ...rest }) => <ButtonBase {...rest} />)`
   border-radius: 5px;
   padding: 4px 7px 4px 7px;
 `;
 
-const FlagBtn = styled(ButtonBase)`
+const FlagBtn = styled(({ ...rest }) => <ButtonBase {...rest} />)`
   border-radius: 5px;
   padding: 3px 5px 3px 5px;
 `;
 
-const EditBtn = styled(ButtonBase)`
+const EditBtn = styled(({ ...rest }) => <ButtonBase {...rest} />)`
   border-radius: 5px;
   padding: 4px 7px 4px 7px;
 `;
 
-const RemoveBtn = styled(ButtonBase)`
+const RemoveBtn = styled(({ ...rest }) => <ButtonBase {...rest} />)`
   border-radius: 5px;
   padding: 4px 7px 4px 7px;
 `;
@@ -163,7 +165,7 @@ const TipPostUserShareItem: React.FC<Props> = ({ tipPost }) => {
             </UserSharePost>
             <Grid item sm={12} md={9} container direction="column" spacing={2}>
               <EditRemoveBtnGrid item container justify="flex-end">
-                <EditBtn>
+                <EditBtn component={Link} to={`/tip-post/edit/${tipPost.id}`}>
                   <StyledEditIcon />
                 </EditBtn>
                 <RemoveBtn>
