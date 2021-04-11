@@ -3,7 +3,7 @@ COPY src /app/src
 COPY pom.xml /app
 RUN mvn -f /app/pom.xml clean package -B
 
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8
 
 ARG SPRING_BOOT_PROFILE
 ARG API_KEY
